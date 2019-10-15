@@ -12,7 +12,9 @@
     <Deterministic>False</Deterministic>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <IsPackable>true</IsPackable>
+    <EmbedLocalReferences>true</EmbedLocalReferences>
   </PropertyGroup>
+
   <ItemGroup>
     <PackageReference Include="CommandLineParser" Version="2.6.0" />
     <PackageReference Include="Microsoft.Win32.Registry" Version="4.6.0" />
@@ -30,14 +32,16 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\submodules\coverlet\src\coverlet.core\coverlet.core.csproj">
-      <!-- <ReferenceOutputAssembly>true</ReferenceOutputAssembly> -->
-      <!-- <IncludeAssets>coverlet.core.dll</IncludeAssets> -->
+      <ReferenceOutputAssembly>true</ReferenceOutputAssembly>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <ReferenceOutputAssembly>true</ReferenceOutputAssembly>
+      <SpecificVersion>false</SpecificVersion>
     </ProjectReference>
   </ItemGroup>
 
   <Target DependsOnTargets="ResolveReferences" Name="CopyProjectReferencesToPackage">
     <ItemGroup>
-      <BuildOutputInPackage Include="@(ReferenceCopyLocalPaths-&gt;WithMetadataValue('ReferenceSourceTarget', 'ProjectReference'))" />
+      <BuildOutputInPackage Include="@(ReferenceCopyLocalPaths->WithMetadataValue('ReferenceSourceTarget', 'ProjectReference'))" />
     </ItemGroup>
   </Target>
 
