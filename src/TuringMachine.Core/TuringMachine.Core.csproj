@@ -16,10 +16,21 @@
   </PropertyGroup>
 
   <ItemGroup>
+    
+    <!--For nuget references-->
+    
+    <PackageReference Include="Microsoft.Extensions.FileSystemGlobbing" Version="3.0.0" />
+    <PackageReference Include="Mono.Cecil" Version="0.11.0" />
+    <PackageReference Include="System.Reflection.Metadata" Version="1.7.0" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="3.0.0" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="3.0.0" />
+
+    <!--Real references-->
+    
     <PackageReference Include="CommandLineParser" Version="2.6.0" />
     <PackageReference Include="Microsoft.Win32.Registry" Version="4.6.0" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
-    <PackageReference Include="ReportGenerator.Core" Version="4.3.0" />
+    <PackageReference Include="ReportGenerator.Core" Version="4.3.1" />
   </ItemGroup>
 
   <!--Replicate roslyn's version pattern logic https://github.com/dotnet/cli/issues/6923#issuecomment-354095128 -->
@@ -30,8 +41,10 @@
     <Version>1.0.$(Build).$(Revision)</Version>
   </PropertyGroup>
 
+  <!--Add coverlet library-->
+  
   <ItemGroup>
-    <ProjectReference Include="..\..\submodules\coverlet\src\coverlet.core\coverlet.core.csproj">
+    <ProjectReference Include="..\..\submodules\coverlet\src\coverlet.core\coverlet.core.csproj" PrivateAssets="all">
       <ReferenceOutputAssembly>true</ReferenceOutputAssembly>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <ReferenceOutputAssembly>true</ReferenceOutputAssembly>
@@ -41,7 +54,7 @@
 
   <Target DependsOnTargets="ResolveReferences" Name="CopyProjectReferencesToPackage">
     <ItemGroup>
-      <BuildOutputInPackage Include="@(ReferenceCopyLocalPaths->WithMetadataValue('ReferenceSourceTarget', 'ProjectReference'))" />
+      <BuildOutputInPackage Include="@(ReferenceCopyLocalPaths-&gt;WithMetadataValue('ReferenceSourceTarget', 'ProjectReference'))" />
     </ItemGroup>
   </Target>
 
