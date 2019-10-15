@@ -1,5 +1,6 @@
 ﻿using NUnit.Framework;
 using System.Collections.Concurrent;
+using TuringMachine.Core.Extensions;
 
 namespace TuringMachine.Core.Tests.Extensions
 {
@@ -17,7 +18,7 @@ namespace TuringMachine.Core.Tests.Extensions
             };
 
             Assert.AreEqual(3, concurrent.Count);
-            concurrent.Clear();
+            ConcurrentExtensions.Clear(concurrent);
             Assert.AreEqual(0, concurrent.Count);
         }
     }

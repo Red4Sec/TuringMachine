@@ -1,6 +1,9 @@
 ﻿using NUnit.Framework;
 using System;
 using System.IO;
+using System.IO.Compression;
+using System.Linq;
+using System.Text;
 using TuringMachine.Core.Helpers;
 using TuringMachine.Core.Logs;
 
@@ -102,6 +105,59 @@ namespace TuringMachine.Core.Tests.Logs
 
             copy.ConfigId = Guid.NewGuid();
             Assert.AreNotEqual(log.GetHashCode(), copy.GetHashCode());
+        }
+
+        [Test]
+        public void FromCurrentFile()
+        {
+            var inputId = Guid.NewGuid();
+            var configId = Guid.NewGuid();
+            var fileName = inputId.ToString() + "." + configId.ToString() + ".current";
+            CoverageHelper.CurrentCoverage = 12.34;
+
+            using (var file = File.Create(fileName))
+            {
+                file.Write(new byte[] { 0x01, 0x02, 0x03 });
+                file.Close();
+            }
+
+            var log = FuzzerLog.FromCurrentFile(fileName, new Exception("Test"), "log123");
+            File.Delete(fileName);
+
+            Assert.AreEqual(inputId, log.InputId);
+            Assert.AreEqual(configId, log.ConfigId);
+            Assert.AreEqual(12.34D, log.Coverage);
+            Assert.NotNull(log.Error);
+
+            using (var stream = new MemoryStream(log.Error.ReplicationData))
+            using (var archive = new ZipArchive(stream, ZipArchiveMode.Read, true))
+            {
+                // Log
+
+                var entry = archive.Entries.Where(u => u.Name == "output.log").FirstOrDefault();
+                Assert.NotNull(entry);
+
+                using (var streamEntry = entry.Open())
+                {
+                    var data = new byte[10];
+                    Array.Resize(ref data, StreamHelper.ReadFull(streamEntry, data, 0, data.Length));
+
+                    CollectionAssert.AreEqual(data, Encoding.UTF8.GetBytes("log123"));
+                }
+
+                // current
+
+                entry = archive.Entries.Where(u => u.Name == Path.GetFileName(fileName)).FirstOrDefault();
+                Assert.NotNull(entry);
+
+                using (var streamEntry = entry.Open())
+                {
+                    var data = new byte[10];
+                    Array.Resize(ref data, StreamHelper.ReadFull(streamEntry, data, 0, data.Length));
+
+                    CollectionAssert.AreEqual(data, new byte[] { 0x01, 0x02, 0x03 });
+                }
+            }
         }
     }
 }

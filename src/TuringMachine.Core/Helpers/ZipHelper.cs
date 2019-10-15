@@ -155,6 +155,7 @@ namespace TuringMachine.Core.Helpers
                 }
 
                 // Append entries
+
                 using (var archive = new ZipArchive(memoryStream, currentIsZip ? ZipArchiveMode.Update : ZipArchiveMode.Create, true))
                 {
                     foreach (var f in append)
@@ -174,6 +175,7 @@ namespace TuringMachine.Core.Helpers
                 }
 
                 // Recover zip
+
                 memoryStream.Seek(0, SeekOrigin.Begin);
                 zip = memoryStream.ToArray();
             }
