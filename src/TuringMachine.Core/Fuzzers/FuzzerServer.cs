@@ -106,7 +106,7 @@ namespace TuringMachine.Core.Fuzzers
 
                                     UpdateFromStream(new FuzzerStat<FuzzerClientInfo>(client), server, _cancel.Token);
                                 }
-                                catch (Exception ex)
+                                catch // (Exception ex)
                                 {
                                     // Pipe error
                                 }
