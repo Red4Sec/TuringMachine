@@ -40,6 +40,6 @@
         /// <summary>
         /// GoodBye
         /// </summary>
-        GoodByte =0xFF
+        GoodByte = 0xFF
     }
 }
