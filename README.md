@@ -25,7 +25,7 @@ Turing Machine currently supports the following fuzzing techniques:
 - More coming soon. Stay tuned! 
 
 <p align="center">
-  <img src="https://github.com/shargon/TheTuringMachine/blob/master/info/types.png?raw=true" width="700px">
+  <img src="https://github.com/Red4Sec/TuringMachine/blob/master/info/types.png?raw=true" width="700px">
 </p>
 
 TuringMachine also allows to integrate code coverage in .Net applications using [coverlet](https://github.com/tonerdo/coverlet) library, which will allow you tracing the coverage of the fuzzed applications in real-time. Once finished, it will generate a full coverage report using [ReportGenerator](https://github.com/danielpalme/ReportGenerator) library.
