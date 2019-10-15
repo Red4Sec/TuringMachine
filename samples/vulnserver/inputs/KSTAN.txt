@@ -1,0 +1,2 @@
+KSTAN value
+EXIT

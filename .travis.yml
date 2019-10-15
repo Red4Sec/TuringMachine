@@ -1,0 +1,34 @@
+language: csharp
+
+os:
+ - linux
+ - osx
+
+dist: bionic
+osx_image: xcode9.1
+
+mono: none
+dotnet: 2.2.300
+
+before_install:
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then ulimit -n 2048; fi
+install:
+  - dotnet tool install -g dotnet-format --version 4.0.40103 --add-source https://dotnet.myget.org/F/format/api/v3/index.json
+  - export PATH="$PATH:$HOME/.dotnet/tools"
+  - dotnet-format --version
+before_script:
+  - echo "Checking format ..." 
+  - dotnet format --check --dry-run -w src/TuringMachine -v diagnostic
+  - dotnet format --check --dry-run -w src/TuringMachine.Core -v diagnostic
+  - dotnet format --check --dry-run -w tests/TuringMachine.Core.Tests -v diagnostic
+  - dotnet format --check --dry-run -w samples/Coverage.Payload -v diagnostic
+  - dotnet format --check --dry-run -w samples/StackOverflowException.Payload -v diagnostic
+  - dotnet format --check --dry-run -w samples/vulnserver/VulnServer.Payload -v diagnostic
+script:
+  - cd tests/TuringMachine.Core.Tests
+  - dotnet restore
+  - find * -name *.csproj | xargs -I % dotnet add % package coverlet.msbuild
+  - dotnet test -v m /p:CollectCoverage=true /p:CoverletOutputFormat=opencover
+after_success:
+  - echo "Test Success - Branch($TRAVIS_BRANCH) Pull Request($TRAVIS_PULL_REQUEST) Tag($TRAVIS_TAG)"
+  - bash <(curl -s https://codecov.io/bash)

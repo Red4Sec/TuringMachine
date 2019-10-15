@@ -1,0 +1,3 @@
+[submodule "submodules/coverlet"]
+	path = submodules/coverlet
+	url = https://github.com/Red4Sec/coverlet

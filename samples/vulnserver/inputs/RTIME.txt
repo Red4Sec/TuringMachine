@@ -1,0 +1,2 @@
+RTIME value
+EXIT

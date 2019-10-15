@@ -1,0 +1,2 @@
+GTER value
+EXIT

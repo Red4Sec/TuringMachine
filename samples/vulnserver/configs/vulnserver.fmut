@@ -1,0 +1,191 @@
+﻿{
+    "Mutations":
+    [
+        {
+            "Description": "Changes",
+            "ValidOffset":
+            {
+                "Type": "From-To",
+                "From": 0,
+                "To": 9223372036854775807
+            },
+            "Changes":
+            [
+                {
+                    "Description": "Buffer overflow (by char)",
+                    "Weight": 1,
+                    "Append":
+                    {
+                        "Type": "From-To",
+                        "From": 1,
+                        "To": 255
+                    },
+                    "AppendIterations":
+                    {
+                        "Type": "Fixed",
+                        "Allowed":
+                        [
+                            100,
+                            250,
+                            500,
+                            1000,
+                            2000,
+                            5000,
+                            10000,
+                            50000
+                        ]
+                    },
+                    "RemoveLength":
+                    {
+                        "Type": "Fixed",
+                        "Allowed":
+                        [
+                            100,
+                            250,
+                            500,
+                            1000,
+                            2000,
+                            5000,
+                            10000,
+                            50000
+                        ]
+                    }
+                },
+                {
+                    "Description": "Integer overflow",
+                    "Weight": 1,
+                    "Append":
+                    {
+                        "Type": "Fixed",
+                        "Allowed":
+                        [
+                            "/////w=="
+                        ]
+                    },
+                    "AppendIterations":
+                    {
+                        "Type": "Fixed",
+                        "Allowed":
+                        [
+                            1,
+                            2
+                        ]
+                    },
+                    "RemoveLength":
+                    {
+                        "Type": "Fixed",
+                        "Allowed":
+                        [
+                            4,
+                            8
+                        ]
+                    }
+                },
+                {
+                    "Description": "Switch byte",
+                    "Weight": 1,
+                    "Append":
+                    {
+                        "Type": "From-To",
+                        "From": 0,
+                        "To": 255
+                    },
+                    "AppendIterations":
+                    {
+                        "Type": "From-To",
+                        "From": 1,
+                        "To": 1
+                    },
+                    "RemoveLength":
+                    {
+                        "Type": "From-To",
+                        "From": 1,
+                        "To": 1
+                    }
+                },
+                {
+                    "Description": "Switch byte (specific)",
+                    "Weight": 1,
+                    "Append":
+                    {
+                        "Type": "Fixed",
+                        "Allowed":
+                        [
+                            "AA==",
+                            "AQ==",
+                            "Ag==",
+                            "Aw==",
+                            "BA==",
+                            "EQ==",
+                            "Ig==",
+                            "Mw==",
+                            "QQ==",
+                            "Qg==",
+                            "Qw==",
+                            "7g==",
+                            "7w==",
+                            "/g==",
+                            "/w=="
+                        ]
+                    },
+                    "AppendIterations":
+                    {
+                        "Type": "Fixed",
+                        "Allowed":
+                        [
+                            1,
+                            2,
+                            4,
+                            8,
+                            16,
+                            32,
+                            64,
+                            128,
+                            256,
+                            512,
+                            1024,
+                            2048
+                        ]
+                    },
+                    "RemoveLength":
+                    {
+                        "Type": "Fixed",
+                        "Allowed":
+                        [
+                            1,
+                            2,
+                            4,
+                            8,
+                            16,
+                            32,
+                            64,
+                            128,
+                            256,
+                            512,
+                            1024,
+                            2048
+                        ]
+                    }
+                }
+            ],
+            "FuzzPercent":
+            {
+                "Type": "Fixed",
+                "Allowed":
+                [
+                    6.0
+                ]
+            },
+            "FuzzPercentType": "PeerByte",
+            "MaxChanges":
+            {
+                "Type": "From-To",
+                "From": 1,
+                "To": 3
+            }
+        }
+    ],
+    "Id": "5a5943ee-e7a1-43b9-a710-13c86a2f7a0a",
+    "Description": "Binary changes",
+    "Type": "Mutational"
+}

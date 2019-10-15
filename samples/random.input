@@ -1,0 +1,11 @@
+{
+    "Type": "Random",
+    "Description": "Random input",
+    "Id": "0c51f3cd-4592-4862-a854-be2b254a4869",
+    "Length":
+    {
+        "Type": "From-To",
+        "From": 0,
+        "To": 5000
+    }
+}

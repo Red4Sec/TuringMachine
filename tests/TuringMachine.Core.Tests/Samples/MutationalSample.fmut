@@ -1,0 +1,89 @@
+﻿{
+    "Mutations":
+    [
+        {
+            "Description": "Changes",
+            "ValidOffset":
+            {
+                "Type": "From-To",
+                "From": 0,
+                "To": 9223372036854775807
+            },
+            "Changes":
+            [
+                {
+                    "Description": "FromTo test",
+                    "Weight": 1,
+                    "Append":
+                    {
+                        "Type": "From-To",
+                        "From": 1,
+                        "To": 2
+                    },
+                    "AppendIterations":
+                    {
+                        "Type": "Fixed",
+                        "Allowed":
+                        [
+                            1
+                        ]
+                    },
+                    "RemoveLength":
+                    {
+                        "Type": "Fixed",
+                        "Allowed":
+                        [
+                            1
+                        ]
+                    }
+                },
+                {
+                    "Description": "Chunks",
+                    "Weight": 1,
+                    "Append":
+                    {
+                        "Type": "Fixed",
+                        "Allowed":
+                        [
+                            "AQI="
+                        ]
+                    },
+                    "AppendIterations":
+                    {
+                        "Type": "Fixed",
+                        "Allowed":
+                        [
+                            1
+                        ]
+                    },
+                    "RemoveLength":
+                    {
+                        "Type": "Fixed",
+                        "Allowed":
+                        [
+                            1
+                        ]
+                    }
+                }
+            ],
+            "FuzzPercent":
+            {
+                "Type": "Fixed",
+                "Allowed":
+                [
+                    5.0
+                ]
+            },
+            "FuzzPercentType": "PeerByte",
+            "MaxChanges":
+            {
+                "Type": "From-To",
+                "From": 0,
+                "To": 2
+            }
+        }
+    ],
+    "Id": "ceb9d9e9-37d1-4a4a-9cb9-d2f4d31c1d22",
+    "Description": "Test",
+    "Type": "Mutational"
+}
