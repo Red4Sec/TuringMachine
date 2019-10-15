@@ -3,6 +3,20 @@
 </p>
 
 <h1 align="center">Turing Machine</h1>
+<p align="center">
+  <a href="https://travis-ci.org/Red4Sec/TuringMachine">
+    <img src="https://travis-ci.org/Red4Sec/TuringMachine.svg?branch=master" alt="Current TravisCI build status.">
+  </a>
+  <a href="https://github.com/Red4Sec/TuringMachine/releases">
+    <img src="https://badge.fury.io/gh/Red4Sec%2FTuringMachine.svg" alt="Current version.">
+  </a>
+  <a href="https://codecov.io/github/Red4Sec/TuringMachine/branch/master/graph/badge.svg">
+    <img src="https://codecov.io/github/Red4Sec/TuringMachine/branch/master/graph/badge.svg" alt="Current Coverage Status." />
+  </a>
+  <a href="https://github.com/Red4Sec/TuringMachine/blob/master/LICENSE">
+    <img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="License.">
+  </a>
+</p>
 <p align="center">Turing Machine is a Fuzzer developed in Net Standard that allows to fuzz any type of applications or libraries, focused on .Net Framework, Dotnet Core and Net Standard applications.</p>
 <p align="center">This tool is designed for software engineers, developers and bug hunters. An open-source tool for software security testing and quality assurance.</p>
 
