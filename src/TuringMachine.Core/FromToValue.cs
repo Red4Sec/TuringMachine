@@ -4,16 +4,15 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
-using TuringMachine.Core.Converters;
+using TuringMachine.Core.Extensions;
 using TuringMachine.Core.Helpers;
 using TuringMachine.Core.Interfaces;
 
 namespace TuringMachine.Core
 {
-    [JsonConverter(typeof(JsonFromToConverter))]
     [DebuggerDisplay(SerializationHelper.DebuggerDisplay)]
     public class FromToValue<T> :
-        IEquatable<FromToValue<T>>, IGetValue<T>
+        IEquatable<FromToValue<T>>, IGetValue<T>, IType
         where T : IComparable, IEquatable<T>, IComparable<T>
     {
         T _From, _To;
@@ -172,6 +171,16 @@ namespace TuringMachine.Core
             return Equals(o);
         }
 
+        public bool Equals(IGetValue<T> obj)
+        {
+            if (!(obj is FromToValue<T> o))
+            {
+                return false;
+            }
+
+            return Equals(o);
+        }
+
         public bool Equals(FromToValue<T> obj)
         {
             if (obj == null) return false;
@@ -189,10 +198,10 @@ namespace TuringMachine.Core
         public override int GetHashCode()
         {
             var hashCode = -1596653049;
-            hashCode = hashCode * -1521134295 + Type.GetHashCode();
-            hashCode = hashCode * -1521134295 + From.GetHashCode();
-            hashCode = hashCode * -1521134295 + To.GetHashCode();
-            hashCode = hashCode * -1521134295 + Excludes.Sum(u => u.GetHashCode());
+            hashCode = hashCode * -1521134295 + Type.GetHashCodeWithNullCheck();
+            hashCode = hashCode * -1521134295 + From.GetHashCodeWithNullCheck();
+            hashCode = hashCode * -1521134295 + To.GetHashCodeWithNullCheck();
+            hashCode = hashCode * -1521134295 + Excludes.GetHashCodeWithNullCheck();
             return hashCode;
         }
     }

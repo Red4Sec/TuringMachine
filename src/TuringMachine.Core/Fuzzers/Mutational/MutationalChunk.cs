@@ -5,28 +5,35 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
-using TuringMachine.Core.Converters;
+using TuringMachine.Core.Extensions;
 using TuringMachine.Core.Helpers;
 
 namespace TuringMachine.Core.Fuzzers.Mutational
 {
-    [JsonConverter(typeof(MutationalChunkConverter))]
     [DebuggerDisplay(SerializationHelper.DebuggerDisplay)]
     public class MutationalChunk : IMutation, IEquatable<MutationalChunk>
     {
-        private readonly IList<byte[]> _chunks;
-
-        [JsonIgnore]
-        [ReadOnly(true)]
-        public IEnumerable<byte[]> Chunks => _chunks.ToArray();
+        /// <summary>
+        /// Chunks
+        /// </summary>
+        public IList<byte[]> Allowed { get; set; }
 
         /// <summary>
         /// Name
         /// </summary>
-        [JsonIgnore]
         [ReadOnly(true)]
         [Browsable(false)]
+        [JsonProperty(Order = 0)]
         public string Type => "Fixed";
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="data">Data</param>
+        public MutationalChunk()
+        {
+            Allowed = new List<byte[]>();
+        }
 
         /// <summary>
         /// Constructor
@@ -35,7 +42,8 @@ namespace TuringMachine.Core.Fuzzers.Mutational
         public MutationalChunk(IEnumerable<byte[]> data)
         {
             if (data == null) throw new ArgumentNullException(nameof(data));
-            _chunks = new List<byte[]>(data);
+
+            Allowed = new List<byte[]>(data);
         }
 
         /// <summary>
@@ -45,7 +53,8 @@ namespace TuringMachine.Core.Fuzzers.Mutational
         public MutationalChunk(params string[] data)
         {
             if (data == null) throw new ArgumentNullException(nameof(data));
-            _chunks = new List<byte[]>(data.Select(u => Encoding.UTF8.GetBytes(u)));
+
+            Allowed = new List<byte[]>(data.Select(u => Encoding.UTF8.GetBytes(u)));
         }
 
         /// <summary>
@@ -59,7 +68,7 @@ namespace TuringMachine.Core.Fuzzers.Mutational
             var data = new List<byte>();
             for (int x = 0; x < size; x++)
             {
-                var chunk = RandomHelper.GetRandom(_chunks);
+                var chunk = RandomHelper.GetRandom(Allowed);
                 if (chunk == null || chunk.Length == 0) continue;
 
                 data.InsertRange(RandomHelper.GetRandom(0, data.Count), chunk);
@@ -74,12 +83,18 @@ namespace TuringMachine.Core.Fuzzers.Mutational
             return Equals(o);
         }
 
+        public bool Equals(IMutation obj)
+        {
+            if (!(obj is MutationalChunk o)) return false;
+            return Equals(o);
+        }
+
         public bool Equals(MutationalChunk obj)
         {
             if (obj == null) return false;
 
             return obj.Type == Type
-                && SequenceEqual(obj._chunks, _chunks);
+                && SequenceEqual(obj.Allowed, Allowed);
         }
 
         private bool SequenceEqual(IList<byte[]> chunks1, IList<byte[]> chunks2)
@@ -110,10 +125,8 @@ namespace TuringMachine.Core.Fuzzers.Mutational
         public override int GetHashCode()
         {
             var hashCode = 1043142361;
-            hashCode = hashCode * -1521134295 + Type.GetHashCode();
-            hashCode = hashCode * -1521134295 + _chunks
-                .Sum(u => (long)(u.Length < 4 ? u.Length : BitConverter.ToInt32(u, 0)))
-                .GetHashCode();
+            hashCode = hashCode * -1521134295 + Type.GetHashCodeWithNullCheck();
+            hashCode = hashCode * -1521134295 + Allowed.GetHashCodeWithNullCheck();
             return hashCode;
         }
     }

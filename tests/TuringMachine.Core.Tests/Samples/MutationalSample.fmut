@@ -2,9 +2,12 @@
     "Mutations":
     [
         {
-            "Description": "Changes",
+            "Description": "First change",
             "ValidOffset":
             {
+                "Excludes":
+                [
+                ],
                 "Type": "From-To",
                 "From": 0,
                 "To": 9223372036854775807
@@ -16,67 +19,118 @@
                     "Weight": 1,
                     "Append":
                     {
+                        "Excludes":
+                        [
+                        ],
                         "Type": "From-To",
                         "From": 1,
                         "To": 2
                     },
                     "AppendIterations":
                     {
-                        "Type": "Fixed",
                         "Allowed":
                         [
                             1
-                        ]
+                        ],
+                        "Type": "Fixed"
                     },
                     "RemoveLength":
                     {
-                        "Type": "Fixed",
                         "Allowed":
                         [
                             1
-                        ]
-                    }
+                        ],
+                        "Type": "Fixed"
+                    },
+                    "Filter":
+                    [
+                        {
+                            "Weight": 1,
+                            "Type": "MixCase",
+                            "FilterPercent":
+                            {
+                                "Excludes":
+                                [
+                                ],
+                                "Type": "From-To",
+                                "From": 0.0,
+                                "To": 10.0
+                            },
+                            "MixType": 2
+                        },
+                        {
+                            "Weight": 1,
+                            "Type": "MixCase",
+                            "FilterPercent":
+                            {
+                                "Excludes":
+                                [
+                                ],
+                                "Type": "From-To",
+                                "From": 0.0,
+                                "To": 10.0
+                            },
+                            "MixType": 1
+                        },
+                        {
+                            "Weight": 1,
+                            "Type": "MixCase",
+                            "FilterPercent":
+                            {
+                                "Excludes":
+                                [
+                                ],
+                                "Type": "From-To",
+                                "From": 0.0,
+                                "To": 10.0
+                            },
+                            "MixType": 0
+                        }
+                    ]
                 },
                 {
                     "Description": "Chunks",
                     "Weight": 1,
                     "Append":
                     {
-                        "Type": "Fixed",
                         "Allowed":
                         [
                             "AQI="
-                        ]
+                        ],
+                        "Type": "Fixed"
                     },
                     "AppendIterations":
                     {
-                        "Type": "Fixed",
                         "Allowed":
                         [
                             1
-                        ]
+                        ],
+                        "Type": "Fixed"
                     },
                     "RemoveLength":
                     {
-                        "Type": "Fixed",
                         "Allowed":
                         [
                             1
-                        ]
+                        ],
+                        "Type": "Fixed"
                     }
                 }
             ],
             "FuzzPercent":
             {
-                "Type": "Fixed",
                 "Allowed":
                 [
                     5.0
-                ]
+                ],
+                "Type": "Fixed"
             },
             "FuzzPercentType": "PeerByte",
             "MaxChanges":
             {
+                "Excludes":
+                [
+                ],
                 "Type": "From-To",
                 "From": 0,
                 "To": 2

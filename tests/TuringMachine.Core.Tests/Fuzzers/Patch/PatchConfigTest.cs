@@ -18,8 +18,7 @@ namespace TuringMachine.Core.Tests.Fuzzers.Patch
             // Test deserialization
 
             var value = File.ReadAllText("Samples/PatchSample.fpatch");
-
-            var config = SerializationHelper.DeserializeFromJson<PatchConfig>(value);
+            var config = (PatchConfig)SerializationHelper.DeserializeFromJson<FuzzingConfigBase>(value);
 
             Assert.AreEqual("8492c051-3acc-4681-8c42-51088cfa0f13", config.Id.ToString());
             Assert.AreEqual("Test", config.Description);

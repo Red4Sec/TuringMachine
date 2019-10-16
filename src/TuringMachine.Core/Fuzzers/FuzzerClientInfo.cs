@@ -41,7 +41,7 @@ namespace TuringMachine.Core.Fuzzers
             {
                 var time = DateTime.UtcNow;
 
-                if ((time - _lastSpeedCheck).TotalMilliseconds >= 500)
+                if ((time - _lastSpeedCheck).TotalMilliseconds >= 250)
                 {
                     var factor = (time - _lastSpeedCheck).TotalMilliseconds / 1000D;
                     var current = Interlocked.Exchange(ref Logs, 0);

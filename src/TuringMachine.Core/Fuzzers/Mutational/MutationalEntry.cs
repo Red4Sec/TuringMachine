@@ -4,8 +4,9 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
-using System.Linq;
 using TuringMachine.Core.Collections;
+using TuringMachine.Core.Converters;
+using TuringMachine.Core.Extensions;
 using TuringMachine.Core.Helpers;
 using TuringMachine.Core.Interfaces;
 
@@ -24,6 +25,7 @@ namespace TuringMachine.Core.Fuzzers.Mutational
         /// Valid offset
         /// </summary>
         [Category("1 - Condition")]
+        [JsonConverter(typeof(IGetValueConverter))]
         public IGetValue<long> ValidOffset { get; set; }
 
         /// <summary>
@@ -36,6 +38,7 @@ namespace TuringMachine.Core.Fuzzers.Mutational
         /// Fuzz Percent
         /// </summary>
         [Category("1 - Condition")]
+        [JsonConverter(typeof(IGetValueConverter))]
         public IGetValue<double> FuzzPercent { get; set; }
 
         /// <summary>
@@ -49,6 +52,7 @@ namespace TuringMachine.Core.Fuzzers.Mutational
         /// MaxChanges
         /// </summary>
         [Category("1 - Condition")]
+        [JsonConverter(typeof(IGetValueConverter))]
         public IGetValue<ushort> MaxChanges { get; set; }
 
         private class Step
@@ -63,9 +67,9 @@ namespace TuringMachine.Core.Fuzzers.Mutational
         public MutationalEntry()
         {
             Description = "Unnamed";
-            FuzzPercent = new FromToValue<double>(100);
-            MaxChanges = new FromToValue<ushort>(0, 2);
-            ValidOffset = new FromToValue<long>(0, long.MaxValue);
+            //FuzzPercent = new FromToValue<double>(100);
+            //MaxChanges = new FromToValue<ushort>(0, 2);
+            //ValidOffset = new FromToValue<long>(0, long.MaxValue);
             Changes = new WeightCollection<MutationalChange>();
         }
 
@@ -78,7 +82,7 @@ namespace TuringMachine.Core.Fuzzers.Mutational
             var s = new Step
             {
                 // Max changes
-                MaxChanges = Math.Max(1, (int)MaxChanges.Get())
+                MaxChanges = MaxChanges == null ? 1 : Math.Max(1, (int)MaxChanges.Get())
             };
 
             if (FuzzPercentType == EFuzzingPercentType.PeerStream)
@@ -125,7 +129,8 @@ namespace TuringMachine.Core.Fuzzers.Mutational
                 case EFuzzingPercentType.PeerByte:
                     {
                         // Check Max changes
-                        if (stream.Log.Length >= MaxChanges.Get())
+                        if (MaxChanges != null &&
+                            stream.Log.Length >= MaxChanges.Get())
                         {
                             return null;
                         }
@@ -161,9 +166,11 @@ namespace TuringMachine.Core.Fuzzers.Mutational
                         // Get Item
                         return Changes.Get();
                     }
+                default:
+                    {
+                        throw new ArgumentException(nameof(FuzzPercentType));
+                    }
             }
-
-            return null;
         }
 
         public override bool Equals(object obj)
@@ -182,10 +189,10 @@ namespace TuringMachine.Core.Fuzzers.Mutational
 
             return obj.Description == Description
                 && obj.FuzzPercentType == FuzzPercentType
-                && obj.ValidOffset.Equals(ValidOffset)
-                && obj.FuzzPercent.Equals(FuzzPercent)
-                && obj.MaxChanges.Equals(MaxChanges)
-                && obj.Changes.SequenceEqual(obj.Changes);
+                && obj.ValidOffset.EqualWithNullCheck(ValidOffset)
+                && obj.FuzzPercent.EqualWithNullCheck(FuzzPercent)
+                && obj.MaxChanges.EqualWithNullCheck(MaxChanges)
+                && obj.Changes.EqualWithNullCheck(obj.Changes);
         }
 
         /// <summary>
@@ -195,12 +202,12 @@ namespace TuringMachine.Core.Fuzzers.Mutational
         public override int GetHashCode()
         {
             var hashCode = 1043142361;
-            hashCode = hashCode * -1521134295 + FuzzPercentType.GetHashCode();
-            hashCode = hashCode * -1521134295 + Description.GetHashCode();
-            hashCode = hashCode * -1521134295 + ValidOffset.GetHashCode();
-            hashCode = hashCode * -1521134295 + FuzzPercent.GetHashCode();
-            hashCode = hashCode * -1521134295 + MaxChanges.GetHashCode();
-            hashCode = hashCode * -1521134295 + Changes.Sum(u => (long)u.GetHashCode()).GetHashCode();
+            hashCode = hashCode * -1521134295 + FuzzPercentType.GetHashCodeWithNullCheck();
+            hashCode = hashCode * -1521134295 + Description.GetHashCodeWithNullCheck();
+            hashCode = hashCode * -1521134295 + ValidOffset.GetHashCodeWithNullCheck();
+            hashCode = hashCode * -1521134295 + FuzzPercent.GetHashCodeWithNullCheck();
+            hashCode = hashCode * -1521134295 + MaxChanges.GetHashCodeWithNullCheck();
+            hashCode = hashCode * -1521134295 + Changes.GetHashCodeWithNullCheck();
             return hashCode;
         }
     }

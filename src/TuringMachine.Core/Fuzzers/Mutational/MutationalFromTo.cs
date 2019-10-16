@@ -1,16 +1,18 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Diagnostics;
-using TuringMachine.Core.Converters;
 using TuringMachine.Core.Helpers;
 using TuringMachine.Core.Interfaces;
 
 namespace TuringMachine.Core.Fuzzers.Mutational
 {
-    [JsonConverter(typeof(MutationalChunkConverter))]
     [DebuggerDisplay(SerializationHelper.DebuggerDisplay)]
     public class MutationalFromTo : FromToValue<byte>, IMutation, IRandomValue<byte>, IEquatable<MutationalFromTo>
     {
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        public MutationalFromTo() : base() { }
+
         /// <summary>
         /// Constructor
         /// </summary>
@@ -38,6 +40,16 @@ namespace TuringMachine.Core.Fuzzers.Mutational
         }
 
         public override bool Equals(object obj)
+        {
+            if (!(obj is MutationalFromTo o))
+            {
+                return false;
+            }
+
+            return Equals(o);
+        }
+
+        public bool Equals(IMutation obj)
         {
             if (!(obj is MutationalFromTo o))
             {

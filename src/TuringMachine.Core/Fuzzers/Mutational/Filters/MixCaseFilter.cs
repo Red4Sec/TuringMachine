@@ -1,12 +1,15 @@
-﻿using System.ComponentModel;
+﻿using Newtonsoft.Json;
+using System.ComponentModel;
 using System.Diagnostics;
+using TuringMachine.Core.Converters;
+using TuringMachine.Core.Extensions;
 using TuringMachine.Core.Helpers;
 using TuringMachine.Core.Interfaces;
 
 namespace TuringMachine.Core.Fuzzers.Mutational.Filters
 {
     [DebuggerDisplay(SerializationHelper.DebuggerDisplay)]
-    public class MixCaseFilter : IFilterChunk
+    public class MixCaseFilter : IChunkFilter
     {
         [DebuggerDisplay(SerializationHelper.DebuggerDisplay)]
         class MixCase
@@ -71,18 +74,19 @@ namespace TuringMachine.Core.Fuzzers.Mutational.Filters
         /// <summary>
         /// Mix cases
         /// </summary>
-        public string Type => "MixCases";
+        public string Type => "MixCase";
 
         /// <summary>
         /// Filter Percent
         /// </summary>
         [Category("1 - Condition")]
+        [JsonConverter(typeof(IGetValueConverter))]
         public IGetValue<double> FilterPercent { get; set; }
 
         /// <summary>
         /// Mix type
         /// </summary>
-        public MixCaseType MixType { get; set; } = MixCaseType.ChangeCase;
+        public MixCaseType MixType { get; set; }
 
         /// <summary>
         /// Constructor
@@ -90,6 +94,7 @@ namespace TuringMachine.Core.Fuzzers.Mutational.Filters
         public MixCaseFilter()
         {
             Weight = 1;
+            MixType = MixCaseType.ChangeCase;
         }
 
         /// <summary>
@@ -170,6 +175,48 @@ namespace TuringMachine.Core.Fuzzers.Mutational.Filters
             }
 
             return input;
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (!(obj is MixCaseFilter o))
+            {
+                return false;
+            }
+
+            return Equals(o);
+        }
+
+        public bool Equals(IChunkFilter obj)
+        {
+            if (!(obj is MixCaseFilter o))
+            {
+                return false;
+            }
+
+            return Equals(o);
+        }
+
+        public bool Equals(MixCaseFilter obj)
+        {
+            if (obj == null) return false;
+
+            return obj.Weight == Weight
+               && obj.MixType == MixType
+               && obj.FilterPercent.Equals(FilterPercent);
+        }
+
+        /// <summary>
+        /// GetHashCode
+        /// </summary>
+        /// <returns>Hash code</returns>
+        public override int GetHashCode()
+        {
+            var hashCode = -1435047217;
+            hashCode = hashCode * -1521134295 + Weight.GetHashCodeWithNullCheck();
+            hashCode = hashCode * -1521134295 + MixType.GetHashCodeWithNullCheck();
+            hashCode = hashCode * -1521134295 + FilterPercent.GetHashCodeWithNullCheck();
+            return hashCode;
         }
     }
 }

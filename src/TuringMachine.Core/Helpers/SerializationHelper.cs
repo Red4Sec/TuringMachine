@@ -24,6 +24,9 @@ namespace TuringMachine.Core.Helpers
             _Settings.Converters.Add(new IPEndPointConverter());
             _Settings.Converters.Add(new FuzzingConfigBaseConverter());
             _Settings.Converters.Add(new FuzzingInputBaseConverter());
+            _Settings.Converters.Add(new IGetValueConverter());
+            _Settings.Converters.Add(new IChunkFilterConverter());
+            _Settings.Converters.Add(new IMutationConverter());
         }
 
         /// <summary>

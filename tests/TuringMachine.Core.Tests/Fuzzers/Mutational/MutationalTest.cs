@@ -1,10 +1,13 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using NUnit.Framework;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using TuringMachine.Core.Collections;
 using TuringMachine.Core.Fuzzers.Mutational;
+using TuringMachine.Core.Fuzzers.Mutational.Filters;
 using TuringMachine.Core.Helpers;
 using TuringMachine.Core.Inputs;
 using TuringMachine.Core.Interfaces;
@@ -22,7 +25,9 @@ namespace TuringMachine.Core.Tests.Fuzzers.Mutational
 
             Assert.IsTrue(config.Equals(copy));
             Assert.IsTrue(config.Equals((object)copy));
+            Assert.IsTrue(config.Equals((IMutation)copy));
             Assert.IsFalse(config.Equals(new object()));
+            Assert.IsFalse(config.Equals(new MutationalFromTo()));
             Assert.AreEqual(config.GetHashCode(), copy.GetHashCode());
 
             var json = SerializationHelper.SerializeToJson(config);
@@ -40,6 +45,7 @@ namespace TuringMachine.Core.Tests.Fuzzers.Mutational
             copy = new MutationalChunk("a", "b");
 
             Assert.IsFalse(config.Equals(copy));
+            Assert.IsFalse(config.Equals((IMutation)copy));
         }
 
         [Test]
@@ -51,12 +57,14 @@ namespace TuringMachine.Core.Tests.Fuzzers.Mutational
             Assert.IsTrue(config.Equals(copy));
             Assert.IsTrue(config.Equals((object)copy));
             Assert.IsFalse(config.Equals(new object()));
+            Assert.IsFalse(config.Equals(new MutationalChunk()));
             Assert.AreEqual(config.GetHashCode(), copy.GetHashCode());
 
             var json = SerializationHelper.SerializeToJson(config);
             config = SerializationHelper.DeserializeFromJson<MutationalFromTo>(json);
 
             Assert.IsTrue(config.Equals(copy));
+            Assert.IsTrue(config.Equals((IMutation)copy));
             Assert.IsTrue(config.Equals((object)copy));
             Assert.IsFalse(config.Equals(new object()));
             Assert.AreEqual(config.GetHashCode(), copy.GetHashCode());
@@ -67,6 +75,7 @@ namespace TuringMachine.Core.Tests.Fuzzers.Mutational
             copy = new MutationalFromTo(1);
 
             Assert.IsFalse(config.Equals(copy));
+            Assert.IsFalse(config.Equals((IMutation)copy));
         }
 
         [Test]
@@ -140,8 +149,7 @@ namespace TuringMachine.Core.Tests.Fuzzers.Mutational
             // Test deserialization
 
             var value = File.ReadAllText("Samples/MutationalSample.fmut");
-
-            var config = SerializationHelper.DeserializeFromJson<MutationConfig>(value);
+            var config = (MutationConfig)SerializationHelper.DeserializeFromJson<FuzzingConfigBase>(value);
 
             Assert.AreEqual("ceb9d9e9-37d1-4a4a-9cb9-d2f4d31c1d22", config.Id.ToString());
             Assert.AreEqual("Test", config.Description);
@@ -150,7 +158,7 @@ namespace TuringMachine.Core.Tests.Fuzzers.Mutational
 
             var entry = config.Mutations[0];
 
-            Assert.AreEqual("Changes", entry.Description);
+            Assert.AreEqual("First change", entry.Description);
             Assert.AreEqual(EFuzzingPercentType.PeerByte, entry.FuzzPercentType);
             Assert.IsTrue(new FixedValue<double>(5).Equals(entry.FuzzPercent));
             Assert.IsTrue(new FromToValue<ushort>(0, 2).Equals(entry.MaxChanges));
@@ -164,7 +172,28 @@ namespace TuringMachine.Core.Tests.Fuzzers.Mutational
                 Weight = 1,
                 AppendIterations = new FixedValue<ushort>(1),
                 RemoveLength = new FixedValue<ushort>(1),
-                Append = new MutationalFromTo(1, 2)
+                Append = new MutationalFromTo(1, 2),
+                Filter = new WeightCollection<IChunkFilter>
+                (
+                    new MixCaseFilter()
+                    {
+                        FilterPercent = new FromToValue<double>(0, 10),
+                        MixType = MixCaseFilter.MixCaseType.ToLowerCase,
+                        Weight = 1
+                    },
+                    new MixCaseFilter()
+                    {
+                        FilterPercent = new FromToValue<double>(0, 10),
+                        MixType = MixCaseFilter.MixCaseType.ToUpperCase,
+                        Weight = 1
+                    },
+                    new MixCaseFilter()
+                    {
+                        FilterPercent = new FromToValue<double>(0, 10),
+                        MixType = MixCaseFilter.MixCaseType.ChangeCase,
+                        Weight = 1
+                    }
+                )
             }
             .Equals(entry.Changes[0]));
 
@@ -345,8 +374,14 @@ namespace TuringMachine.Core.Tests.Fuzzers.Mutational
                 }
             }
 
+            // Argument excepcion
+
+            entry.FuzzPercentType = (EFuzzingPercentType)197;
+            Assert.Throws<ArgumentException>(() => entry.Get(null, 0, 0));
+
             // Only offset 5
 
+            entry.FuzzPercentType = EFuzzingPercentType.PeerByte;
             entry.FuzzPercent = new FromToValue<double>(100);
             entry.ValidOffset = new FromToValue<long>(5);
 

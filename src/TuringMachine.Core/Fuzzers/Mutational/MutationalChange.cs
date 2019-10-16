@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using TuringMachine.Core.Collections;
 using TuringMachine.Core.Converters;
+using TuringMachine.Core.Extensions;
 using TuringMachine.Core.Fuzzers.Patch;
 using TuringMachine.Core.Helpers;
 using TuringMachine.Core.Interfaces;
@@ -32,7 +33,7 @@ namespace TuringMachine.Core.Fuzzers.Mutational
         /// </summary>
         [Category("1 - Append")]
         [Description("Set the kind of bytes for add")]
-        [JsonConverter(typeof(MutationalChunkConverter))]
+        [JsonConverter(typeof(IMutationConverter))]
         public IMutation Append { get; set; }
 
         /// <summary>
@@ -40,6 +41,7 @@ namespace TuringMachine.Core.Fuzzers.Mutational
         /// </summary>
         [Category("1 - Append")]
         [Description("Set the append length value")]
+        [JsonConverter(typeof(IGetValueConverter))]
         public IGetValue<ushort> AppendIterations { get; set; }
 
         /// <summary>
@@ -47,6 +49,7 @@ namespace TuringMachine.Core.Fuzzers.Mutational
         /// </summary>
         [Category("2 - Remove")]
         [Description("Set the remove length value")]
+        [JsonConverter(typeof(IGetValueConverter))]
         public IGetValue<ushort> RemoveLength { get; set; }
 
         /// <summary>
@@ -54,16 +57,16 @@ namespace TuringMachine.Core.Fuzzers.Mutational
         /// </summary>
         [Category("2 - Filter")]
         [Description("Set a filter for the chunk")]
-        public WeightCollection<IFilterChunk> Filter { get; set; }
+        public WeightCollection<IChunkFilter> Filter { get; set; }
 
         /// <summary>
         /// Constructor
         /// </summary>
         public MutationalChange()
         {
-            Append = new MutationalFromTo(byte.MinValue, byte.MaxValue);
-            RemoveLength = new FromToValue<ushort>(1);
-            AppendIterations = new FromToValue<ushort>(1);
+            //Append = new MutationalFromTo(byte.MinValue, byte.MaxValue);
+            //RemoveLength = new FromToValue<ushort>(1);
+            //AppendIterations = new FromToValue<ushort>(1);
             Description = "Unnamed";
             Weight = 1;
         }
@@ -76,12 +79,12 @@ namespace TuringMachine.Core.Fuzzers.Mutational
         {
             // Removes
 
-            var remove = RemoveLength.Get();
+            var remove = RemoveLength != null ? RemoveLength.Get() : (ushort)0;
 
             // Appends
 
-            var size = AppendIterations.Get();
-            byte[] data = size > 0 ? Append.GetChunk(size) : null;
+            var size = AppendIterations != null ? AppendIterations.Get() : 0;
+            byte[] data = size > 0 && Append != null ? Append.GetChunk(size) : null;
 
             if (data == null || data.Length == 0)
             {
@@ -118,9 +121,10 @@ namespace TuringMachine.Core.Fuzzers.Mutational
 
             return obj.Weight == Weight
                 && obj.Description == Description
-                && obj.RemoveLength.Equals(RemoveLength)
-                && obj.AppendIterations.Equals(AppendIterations)
-                && obj.Append.Equals(Append);
+                && obj.RemoveLength.EqualWithNullCheck(RemoveLength)
+                && obj.AppendIterations.EqualWithNullCheck(AppendIterations)
+                && obj.Append.EqualWithNullCheck(Append)
+                && obj.Filter.EqualWithNullCheck(Filter);
         }
 
         /// <summary>
@@ -130,11 +134,12 @@ namespace TuringMachine.Core.Fuzzers.Mutational
         public override int GetHashCode()
         {
             var hashCode = -1435047217;
-            hashCode = hashCode * -1521134295 + Description.GetHashCode();
-            hashCode = hashCode * -1521134295 + Weight.GetHashCode();
-            hashCode = hashCode * -1521134295 + Append.GetHashCode();
-            hashCode = hashCode * -1521134295 + AppendIterations.GetHashCode();
-            hashCode = hashCode * -1521134295 + RemoveLength.GetHashCode();
+            hashCode = hashCode * -1521134295 + Description.GetHashCodeWithNullCheck();
+            hashCode = hashCode * -1521134295 + Weight.GetHashCodeWithNullCheck();
+            hashCode = hashCode * -1521134295 + Append.GetHashCodeWithNullCheck();
+            hashCode = hashCode * -1521134295 + AppendIterations.GetHashCodeWithNullCheck();
+            hashCode = hashCode * -1521134295 + RemoveLength.GetHashCodeWithNullCheck();
+            hashCode = hashCode * -1521134295 + Filter.GetHashCodeWithNullCheck();
             return hashCode;
         }
     }

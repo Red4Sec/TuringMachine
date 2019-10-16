@@ -3,6 +3,7 @@ using System;
 using System.Diagnostics;
 using System.IO;
 using System.Text;
+using TuringMachine.Core.Extensions;
 using TuringMachine.Core.Helpers;
 
 namespace TuringMachine.Core.Logs
@@ -71,10 +72,10 @@ namespace TuringMachine.Core.Logs
         public override int GetHashCode()
         {
             var hashCode = -1268746195;
-            hashCode = hashCode * -1521134295 + BitConverter.ToInt32(InputId.ToByteArray(), 0);
-            hashCode = hashCode * -1521134295 + BitConverter.ToInt32(ConfigId.ToByteArray(), 0);
-            hashCode = hashCode * -1521134295 + (Error == null ? 0 : Error.GetHashCode());
-            hashCode = hashCode * -1521134295 + Coverage.GetHashCode();
+            hashCode = hashCode * -1521134295 + InputId.GetHashCodeWithNullCheck();
+            hashCode = hashCode * -1521134295 + ConfigId.GetHashCodeWithNullCheck();
+            hashCode = hashCode * -1521134295 + Error.GetHashCodeWithNullCheck();
+            hashCode = hashCode * -1521134295 + Coverage.GetHashCodeWithNullCheck();
             return hashCode;
         }
 

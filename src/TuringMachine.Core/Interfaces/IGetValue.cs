@@ -1,6 +1,8 @@
+using System;
+
 namespace TuringMachine.Core.Interfaces
 {
-    public interface IGetValue<T> : IRandomValue<T>
+    public interface IGetValue<T> : IRandomValue<T>, IEquatable<IGetValue<T>>
     {
         /// <summary>
         /// Check if value its valid

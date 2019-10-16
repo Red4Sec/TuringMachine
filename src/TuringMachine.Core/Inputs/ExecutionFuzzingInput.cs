@@ -1,8 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
+using TuringMachine.Core.Extensions;
 using TuringMachine.Core.Interfaces;
 
 namespace TuringMachine.Core.Inputs
@@ -100,8 +100,8 @@ namespace TuringMachine.Core.Inputs
         {
             var hashCode = -1289872652;
             hashCode = hashCode * -1521134295 + base.GetHashCode();
-            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(FileName);
-            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(Arguments);
+            hashCode = hashCode * -1521134295 + FileName.GetHashCodeWithNullCheck();
+            hashCode = hashCode * -1521134295 + Arguments.GetHashCodeWithNullCheck();
             return hashCode;
         }
     }

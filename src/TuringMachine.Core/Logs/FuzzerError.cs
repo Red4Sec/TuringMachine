@@ -2,7 +2,7 @@
 using System;
 using System.IO;
 using System.Linq;
-using TuringMachine.Core.Helpers;
+using TuringMachine.Core.Extensions;
 
 namespace TuringMachine.Core.Logs
 {
@@ -126,10 +126,10 @@ namespace TuringMachine.Core.Logs
         public override int GetHashCode()
         {
             var hashCode = -1592154030;
-            hashCode = hashCode * -1521134295 + Error.GetHashCode();
-            hashCode = hashCode * -1521134295 + ExplotationResult.GetHashCode();
-            hashCode = hashCode * -1521134295 + BitConverter.ToInt32(ErrorId.ToByteArray(), 0);
-            hashCode = hashCode * -1521134295 + (ReplicationData == null ? 0 : BitConverter.ToInt32(HashHelper.Sha256(ReplicationData), 0));
+            hashCode = hashCode * -1521134295 + Error.GetHashCodeWithNullCheck();
+            hashCode = hashCode * -1521134295 + ExplotationResult.GetHashCodeWithNullCheck();
+            hashCode = hashCode * -1521134295 + ErrorId.GetHashCodeWithNullCheck();
+            hashCode = hashCode * -1521134295 + ReplicationData.GetHashCodeWithNullCheck();
             return hashCode;
         }
     }

@@ -1,7 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using TuringMachine.Core.Extensions;
 using TuringMachine.Core.Helpers;
 
 namespace TuringMachine.Core.Fuzzers.Patch
@@ -86,10 +86,10 @@ namespace TuringMachine.Core.Fuzzers.Patch
         public override int GetHashCode()
         {
             var hashCode = -106078415;
-            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(Description);
-            hashCode = hashCode * -1521134295 + Offset.GetHashCode();
-            hashCode = hashCode * -1521134295 + Remove.GetHashCode();
-            hashCode = hashCode * -1521134295 + BitConverter.ToInt32(HashHelper.Sha256(Append), 0);
+            hashCode = hashCode * -1521134295 + Description.GetHashCodeWithNullCheck();
+            hashCode = hashCode * -1521134295 + Offset.GetHashCodeWithNullCheck();
+            hashCode = hashCode * -1521134295 + Remove.GetHashCodeWithNullCheck();
+            hashCode = hashCode * -1521134295 + Append.GetHashCodeWithNullCheck();
             return hashCode;
         }
     }

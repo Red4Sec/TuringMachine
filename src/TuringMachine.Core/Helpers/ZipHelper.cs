@@ -5,6 +5,7 @@ using System.IO.Compression;
 using System.Linq;
 using System.Text;
 using System.Threading;
+using TuringMachine.Core.Extensions;
 
 namespace TuringMachine.Core.Helpers
 {
@@ -75,8 +76,8 @@ namespace TuringMachine.Core.Helpers
             public override int GetHashCode()
             {
                 var hashCode = -972130872;
-                hashCode = hashCode * -1521134295 + FileName.GetHashCode();
-                hashCode = hashCode * -1521134295 + BitConverter.ToInt32(HashHelper.Sha256(Data), 0);
+                hashCode = hashCode * -1521134295 + FileName.GetHashCodeWithNullCheck();
+                hashCode = hashCode * -1521134295 + Data.GetHashCodeWithNullCheck();
                 return hashCode;
             }
         }
