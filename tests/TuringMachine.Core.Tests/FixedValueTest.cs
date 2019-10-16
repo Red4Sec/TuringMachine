@@ -1,5 +1,6 @@
 ﻿using NUnit.Framework;
 using TuringMachine.Core.Helpers;
+using TuringMachine.Core.Interfaces;
 
 namespace TuringMachine.Core.Tests
 {
@@ -35,7 +36,9 @@ namespace TuringMachine.Core.Tests
 
             Assert.IsTrue(entry.Equals(copy));
             Assert.IsTrue(entry.Equals((object)copy));
+            Assert.IsTrue(entry.Equals((IGetValue<byte>)copy));
             Assert.IsFalse(entry.Equals(new object()));
+            Assert.IsFalse(entry.Equals((IGetValue<byte>)new FromToValue<byte>()));
             Assert.AreEqual(entry.GetHashCode(), copy.GetHashCode());
 
             copy.Allowed.Add(3);
@@ -49,7 +52,9 @@ namespace TuringMachine.Core.Tests
 
             Assert.IsTrue(copy.Equals(copy));
             Assert.IsTrue(copy.Equals((object)copy));
+            Assert.IsTrue(copy.Equals((IGetValue<byte>)copy));
             Assert.IsFalse(copy.Equals(new object()));
+            Assert.IsFalse(copy.Equals((IGetValue<byte>)new FromToValue<byte>()));
             Assert.AreEqual(copy.GetHashCode(), copy.GetHashCode());
 
             copy.Allowed.Clear();
