@@ -32,7 +32,7 @@ namespace TuringMachine.Core.Fuzzers.Patch
         {
             Description = description;
 
-            foreach(var entry in entries)
+            foreach (var entry in entries)
             {
                 Changes.Add(entry);
             }
