@@ -24,6 +24,11 @@ namespace TuringMachine.Core
         public FuzzingConfigBase Config { get; private set; }
 
         /// <summary>
+        /// Current Stored Stream
+        /// </summary>
+        public Stream CurrentStream => _storeCurrentStream;
+
+        /// <summary>
         /// Variables
         /// </summary>
         public IDictionary<int, object> Variables { get; }

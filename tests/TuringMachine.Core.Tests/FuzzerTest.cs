@@ -318,6 +318,32 @@ namespace TuringMachine.Core.Tests
                 Assert.AreEqual(4, server.UniqueErrors);
                 Assert.AreEqual(4, server.TotalErrors);
 
+                // Current stream
+
+                var logReaded = new byte[255];
+                var current = new byte[logReaded.Length];
+                FuzzingStream fuzStream = null;
+
+                Fuzzer.Run((stream) =>
+                {
+                    Array.Resize(ref current, stream.Read(current, 0, current.Length));
+                    fuzStream = (FuzzingStream)stream;
+                    Assert.IsNotNull(fuzStream.CurrentStream);
+                },
+                new FuzzerRunArgs()
+                {
+                    StoreCurrent = true,
+                    OnLog = (l, c) =>
+                    {
+                        logReaded = File.ReadAllBytes(((FileStream)fuzStream.CurrentStream).Name);
+                        c.Cancel = true;
+                    },
+                });
+
+                Assert.IsNotNull(fuzStream);
+                Assert.IsNotNull(fuzStream.CurrentStream);
+                CollectionAssert.AreEqual(current, logReaded);
+
                 // Clean
 
                 Fuzzer.Client.Stop();

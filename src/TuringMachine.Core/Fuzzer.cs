@@ -189,19 +189,28 @@ namespace TuringMachine.Core
                             var input = Client.GetInput();
                             var config = Client.GetConfig();
 
+                            string currentStreamPath = null;
                             FileStream storeCurrentStream = null;
 
                             if (args?.StoreCurrent == true)
                             {
                                 // Free current stream
 
-                                var file = $"{input.Id}.{config.Id}.{Process.GetCurrentProcess().Id}.{args.TaskId}.current";
-                                storeCurrentStream = new FileStream(file, FileMode.Create, FileAccess.Write, FileShare.Read);
+                                currentStreamPath = $"{input.Id}.{config.Id}.{Process.GetCurrentProcess().Id}.{args.TaskId}.current";
+                                storeCurrentStream = new FileStream(currentStreamPath, FileMode.Create, FileAccess.Write, FileShare.Read);
                             }
 
                             using (var stream = new FuzzingStream(config, input, storeCurrentStream))
                             {
                                 var log = Client.Execute(action, stream);
+
+                                if (storeCurrentStream != null)
+                                {
+                                    // Free current stream
+
+                                    storeCurrentStream.Close();
+                                    storeCurrentStream.Dispose();
+                                }
 
                                 if (log != null)
                                 {
@@ -210,12 +219,11 @@ namespace TuringMachine.Core
                                 }
                             }
 
-                            if (storeCurrentStream != null)
+                            if (currentStreamPath != null)
                             {
-                                // Free current stream
+                                // Delete current stream
 
-                                storeCurrentStream.Close();
-                                storeCurrentStream.Dispose();
+                                File.Delete(currentStreamPath);
                             }
                         }
                         break;
