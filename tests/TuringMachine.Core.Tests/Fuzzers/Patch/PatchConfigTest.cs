@@ -4,6 +4,7 @@ using NUnit.Framework;
 using System;
 using System.IO;
 using System.Linq;
+using TuringMachine.Core.Fuzzers.Mutational;
 using TuringMachine.Core.Fuzzers.Patch;
 using TuringMachine.Core.Helpers;
 using TuringMachine.Core.Interfaces;
@@ -70,6 +71,7 @@ namespace TuringMachine.Core.Tests.Fuzzers.Patch
             Assert.IsTrue(entry.Equals(copy.Changes[0]));
             Assert.IsTrue(entry.Equals((object)copy.Changes[0]));
             Assert.IsFalse(entry.Equals(new object()));
+            Assert.IsFalse(entry.Equals((FuzzingConfigBase)new MutationConfig()));
             Assert.AreEqual(entry.GetHashCode(), copy.Changes[0].GetHashCode());
 
             entry.Offset++;
@@ -84,6 +86,7 @@ namespace TuringMachine.Core.Tests.Fuzzers.Patch
             Assert.IsTrue(config.Equals(copy));
             Assert.IsTrue(config.Equals((object)copy));
             Assert.IsFalse(config.Equals(new object()));
+            Assert.IsFalse(config.Equals((FuzzingConfigBase)new MutationConfig()));
             Assert.AreEqual(config.GetHashCode(), copy.GetHashCode());
 
             config.Id = Guid.NewGuid();

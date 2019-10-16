@@ -8,6 +8,7 @@ using System.Linq;
 using TuringMachine.Core.Collections;
 using TuringMachine.Core.Fuzzers.Mutational;
 using TuringMachine.Core.Fuzzers.Mutational.Filters;
+using TuringMachine.Core.Fuzzers.Patch;
 using TuringMachine.Core.Helpers;
 using TuringMachine.Core.Inputs;
 using TuringMachine.Core.Interfaces;
@@ -224,6 +225,7 @@ namespace TuringMachine.Core.Tests.Fuzzers.Mutational
             Assert.IsTrue(config.Equals(copy));
             Assert.IsTrue(config.Equals((object)copy));
             Assert.IsFalse(config.Equals(new object()));
+            Assert.IsFalse(config.Equals((FuzzingConfigBase)new PatchConfig()));
             Assert.AreEqual(config.GetHashCode(), copy.GetHashCode());
 
             Assert.IsTrue(config.Mutations[0].Equals(copy.Mutations[0]));
