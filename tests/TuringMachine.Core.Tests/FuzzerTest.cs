@@ -180,7 +180,7 @@ namespace TuringMachine.Core.Tests
                 Assert.AreEqual(0, server.UniqueErrors);
                 Assert.AreEqual(0, server.TotalErrors);
 
-                Thread.Sleep(500);
+                Thread.Sleep(250);
 
                 Assert.IsTrue(server.Connections.Values.FirstOrDefault().Source.Speed > speedInit);
                 Assert.AreEqual(log.Coverage, server.Connections.Values.FirstOrDefault().Source.Coverage);

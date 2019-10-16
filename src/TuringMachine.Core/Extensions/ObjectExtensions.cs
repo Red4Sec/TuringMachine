@@ -17,7 +17,12 @@ namespace TuringMachine.Core.Extensions
         /// <returns>True if are equals</returns>
         public static bool EqualWithNullCheck<T>(this IEquatable<T> a, IEquatable<T> b)
         {
-            return (((a == null) == (b == null)) && a.Equals(b));
+            if ((a == null) != (b == null))
+            {
+                return false;
+            }
+
+            return a == null || a.Equals(b);
         }
 
         /// <summary>
