@@ -13,8 +13,7 @@
   <a href="https://github.com/Red4Sec/TuringMachine/blob/master/LICENSE" target="_blank">
     <img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="License.">
   </a>
-</p>
-<p align="center">
+<br>
   <a href="https://github.com/Red4Sec/TuringMachine/releases" target="_blank">
     <img src="https://badge.fury.io/gh/Red4Sec%2FTuringMachine.svg" alt="Current version.">
   </a>
