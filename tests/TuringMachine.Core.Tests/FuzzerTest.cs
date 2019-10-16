@@ -147,6 +147,8 @@ namespace TuringMachine.Core.Tests
                 Assert.AreNotEqual(Guid.Empty, server.Connections.Values.FirstOrDefault()?.Source.Id);
                 Assert.AreNotEqual(Guid.Empty, server.Connections.Values.FirstOrDefault()?.Id);
 
+                var speedInit = server.Connections.Values.FirstOrDefault().Source.Speed;
+
                 CheckConfig(() => ((IRandomValue<FuzzingConfigBase>)client).Get(), server.Configurations.Select(u => u.Value.Source).ToArray());
                 CheckConfig(() => ((IRandomValue<FuzzingInputBase>)client).Get(), server.Inputs.Select(u => u.Value.Source).ToArray());
                 CheckConfig(() => client.GetConfig(), server.Configurations.Select(u => u.Value.Source).ToArray());
@@ -160,6 +162,7 @@ namespace TuringMachine.Core.Tests
                 {
                     ConfigId = cfg.Id,
                     InputId = input.Id,
+                    Coverage = 10,
                 };
 
                 var sIn = server.Inputs.Select(u => u.Value).Where(u => u.Source.Id == log.InputId).FirstOrDefault();
@@ -176,6 +179,11 @@ namespace TuringMachine.Core.Tests
                 Assert.AreEqual(0, server.Logs.Count);
                 Assert.AreEqual(0, server.UniqueErrors);
                 Assert.AreEqual(0, server.TotalErrors);
+
+                Thread.Sleep(500);
+
+                Assert.IsTrue(server.Connections.Values.FirstOrDefault().Source.Speed > speedInit);
+                Assert.AreEqual(log.Coverage, server.Connections.Values.FirstOrDefault().Source.Coverage);
 
                 // Check stats
 
