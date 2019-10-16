@@ -192,7 +192,7 @@ namespace TuringMachine.Core.Fuzzers.Mutational
                 && obj.ValidOffset.EqualWithNullCheck(ValidOffset)
                 && obj.FuzzPercent.EqualWithNullCheck(FuzzPercent)
                 && obj.MaxChanges.EqualWithNullCheck(MaxChanges)
-                && obj.Changes.EqualWithNullCheck(obj.Changes);
+                && obj.Changes.EqualWithNullCheck(Changes);
         }
 
         /// <summary>

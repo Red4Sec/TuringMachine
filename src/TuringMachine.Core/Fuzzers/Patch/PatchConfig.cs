@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
 using TuringMachine.Core.Extensions;
 using TuringMachine.Core.Interfaces;
 
@@ -13,7 +12,7 @@ namespace TuringMachine.Core.Fuzzers.Patch
         /// Mutations
         /// </summary>
         [Category("1 - Collection")]
-        public List<PatchChange> Changes { get; set; }
+        public IList<PatchChange> Changes { get; set; }
 
         /// <summary>
         /// Constructor
@@ -28,11 +27,15 @@ namespace TuringMachine.Core.Fuzzers.Patch
         /// Constructor
         /// </summary>
         /// <param name="description">Description</param>
-        /// <param name="changes">Changes</param>
-        public PatchConfig(string description, params PatchChange[] changes) : this()
+        /// <param name="entries">Changes</param>
+        public PatchConfig(string description, params PatchChange[] entries) : this()
         {
             Description = description;
-            Changes.AddRange(changes);
+
+            foreach(var entry in entries)
+            {
+                Changes.Add(entry);
+            }
         }
 
         /// <summary>
@@ -81,7 +84,7 @@ namespace TuringMachine.Core.Fuzzers.Patch
             if (obj == null) return false;
 
             return base.Equals(obj)
-                && obj.Changes.SequenceEqual(obj.Changes);
+                && obj.Changes.SequenceEqualWithNullCheck(obj.Changes);
         }
 
         /// <summary>

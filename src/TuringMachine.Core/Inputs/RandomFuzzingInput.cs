@@ -10,7 +10,7 @@ namespace TuringMachine.Core.Inputs
         /// <summary>
         /// Length
         /// </summary>
-        public FromToValue<long> Length { get; set; }
+        public IGetValue<long> Length { get; set; }
 
         /// <summary>
         /// Constructor
@@ -21,7 +21,7 @@ namespace TuringMachine.Core.Inputs
         /// Constructor
         /// </summary>
         /// <param name="length">Length</param>
-        public RandomFuzzingInput(FromToValue<long> length) : base("Random")
+        public RandomFuzzingInput(IGetValue<long> length) : base("Random")
         {
             Length = length;
         }
@@ -47,7 +47,7 @@ namespace TuringMachine.Core.Inputs
             if (obj == null) return false;
 
             return base.Equals(obj)
-                && obj.Length.Equals(Length);
+                && obj.Length.EqualWithNullCheck(Length);
         }
 
         /// <summary>

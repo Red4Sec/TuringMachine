@@ -1,6 +1,5 @@
 ﻿using System;
 using System.IO;
-using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using TuringMachine.Core.Extensions;
@@ -69,8 +68,8 @@ namespace TuringMachine.Core.Inputs
             if (obj == null) return false;
 
             return base.Equals(obj)
-                && obj.EndPoint.Equals(EndPoint)
-                && ((obj.Request == null && Request == null) || Request.SequenceEqual(obj.Request));
+                && obj.EndPoint.EqualWithNullCheck(EndPoint)
+                && obj.Request.SequenceEqualWithNullCheck(Request);
         }
 
         /// <summary>

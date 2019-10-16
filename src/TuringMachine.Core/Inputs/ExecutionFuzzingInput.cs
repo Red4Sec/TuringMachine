@@ -73,8 +73,9 @@ namespace TuringMachine.Core.Inputs
             if (obj == null) return false;
 
             return base.Equals(obj)
-                && obj.FileName.Equals(FileName)
-                && obj.Arguments.Equals(Arguments);
+                && obj.ExitTimeOut.EqualWithNullCheck(ExitTimeOut)
+                && obj.FileName.EqualWithNullCheck(FileName)
+                && obj.Arguments.EqualWithNullCheck(Arguments);
         }
 
         /// <summary>
@@ -117,6 +118,7 @@ namespace TuringMachine.Core.Inputs
             hashCode = hashCode * -1521134295 + base.GetHashCode();
             hashCode = hashCode * -1521134295 + FileName.GetHashCodeWithNullCheck();
             hashCode = hashCode * -1521134295 + Arguments.GetHashCodeWithNullCheck();
+            hashCode = hashCode * -1521134295 + ExitTimeOut.GetHashCodeWithNullCheck();
             return hashCode;
         }
     }

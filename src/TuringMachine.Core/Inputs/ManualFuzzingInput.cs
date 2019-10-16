@@ -41,8 +41,8 @@ namespace TuringMachine.Core.Inputs
         {
             if (obj == null) return false;
 
-            return base.Equals(obj) 
-                && ((Data == null && obj.Data == null) || Data.SequenceEqual(obj.Data));
+            return base.Equals(obj)
+                && obj.Data.SequenceEqualWithNullCheck(Data);
         }
 
         /// <summary>

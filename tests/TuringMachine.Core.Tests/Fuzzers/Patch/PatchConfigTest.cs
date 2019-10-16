@@ -3,6 +3,7 @@ using Newtonsoft.Json.Linq;
 using NUnit.Framework;
 using System;
 using System.IO;
+using System.Linq;
 using TuringMachine.Core.Fuzzers.Patch;
 using TuringMachine.Core.Helpers;
 using TuringMachine.Core.Interfaces;

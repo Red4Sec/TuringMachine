@@ -65,8 +65,8 @@ namespace TuringMachine.Core.Inputs
             if (obj == null) return false;
 
             return base.Equals(obj)
-                && obj.FileName == FileName
-                && obj.UseCache == UseCache;
+                && obj.FileName.EqualWithNullCheck(FileName)
+                && obj.UseCache.EqualWithNullCheck(UseCache);
         }
 
         /// <summary>
