@@ -64,9 +64,9 @@ namespace TuringMachine.Core.Inputs
         {
             if (obj == null) return false;
 
-            return Equals((FuzzingInputBase)obj)
-                && FileName == obj.FileName
-                && UseCache == obj.UseCache;
+            return base.Equals(obj)
+                && obj.FileName.EqualWithNullCheck(FileName)
+                && obj.UseCache.EqualWithNullCheck(UseCache);
         }
 
         /// <summary>
@@ -75,6 +75,21 @@ namespace TuringMachine.Core.Inputs
         /// <param name="obj">Object</param>
         /// <returns>Return true if are equals</returns>
         public override bool Equals(object obj)
+        {
+            if (obj is FileFuzzingInput o)
+            {
+                return Equals(o);
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// Equals
+        /// </summary>
+        /// <param name="obj">Object</param>
+        /// <returns>Return true if are equals</returns>
+        public override bool Equals(FuzzingInputBase obj)
         {
             if (obj is FileFuzzingInput o)
             {

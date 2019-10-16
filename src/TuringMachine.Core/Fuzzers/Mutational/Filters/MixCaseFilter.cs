@@ -203,7 +203,7 @@ namespace TuringMachine.Core.Fuzzers.Mutational.Filters
 
             return obj.Weight == Weight
                && obj.MixType == MixType
-               && obj.FilterPercent.Equals(FilterPercent);
+               && obj.FilterPercent.EqualWithNullCheck(FilterPercent);
         }
 
         /// <summary>

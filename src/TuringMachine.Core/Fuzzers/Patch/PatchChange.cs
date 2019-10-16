@@ -74,9 +74,9 @@ namespace TuringMachine.Core.Fuzzers.Patch
             if (obj == null) return false;
 
             return obj.Description == Description
-                && obj.Append.SequenceEqual(Append)
                 && obj.Offset == Offset
-                && obj.Remove == Remove;
+                && obj.Remove == Remove
+                && obj.Append.SequenceEqualWithNullCheck(Append);
         }
 
         /// <summary>

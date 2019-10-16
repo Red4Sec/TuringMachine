@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
 using TuringMachine.Core.Extensions;
 using TuringMachine.Core.Fuzzers.Patch;
 using TuringMachine.Core.Interfaces;
@@ -79,12 +78,22 @@ namespace TuringMachine.Core.Fuzzers.Mutational
             return Equals(o);
         }
 
+        public override bool Equals(FuzzingConfigBase obj)
+        {
+            if (!(obj is MutationConfig o))
+            {
+                return false;
+            }
+
+            return Equals(o);
+        }
+
         public bool Equals(MutationConfig obj)
         {
             if (obj == null) return false;
 
             return base.Equals(obj)
-                && obj.Mutations.SequenceEqual(obj.Mutations);
+                && obj.Mutations.SequenceEqualWithNullCheck(obj.Mutations);
         }
 
         /// <summary>

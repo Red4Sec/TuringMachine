@@ -94,28 +94,7 @@ namespace TuringMachine.Core.Fuzzers.Mutational
             if (obj == null) return false;
 
             return obj.Type == Type
-                && SequenceEqual(obj.Allowed, Allowed);
-        }
-
-        private bool SequenceEqual(IList<byte[]> chunks1, IList<byte[]> chunks2)
-        {
-            if ((chunks1 == null) != (chunks2 == null)) return false;
-            if (chunks1 == null) return true;
-
-            if (chunks1.Count != chunks2.Count)
-            {
-                return false;
-            }
-
-            for (int x = chunks1.Count - 1; x >= 0; x--)
-            {
-                if (!chunks1[x].SequenceEqual(chunks2[x]))
-                {
-                    return false;
-                }
-            }
-
-            return true;
+                && obj.Allowed.ChunkSequenceEqualWithNullCheck(Allowed);
         }
 
         /// <summary>

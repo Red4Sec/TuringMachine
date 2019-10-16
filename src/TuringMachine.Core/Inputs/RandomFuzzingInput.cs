@@ -10,7 +10,7 @@ namespace TuringMachine.Core.Inputs
         /// <summary>
         /// Length
         /// </summary>
-        public FromToValue<long> Length { get; set; }
+        public IGetValue<long> Length { get; set; }
 
         /// <summary>
         /// Constructor
@@ -21,7 +21,7 @@ namespace TuringMachine.Core.Inputs
         /// Constructor
         /// </summary>
         /// <param name="length">Length</param>
-        public RandomFuzzingInput(FromToValue<long> length) : base("Random")
+        public RandomFuzzingInput(IGetValue<long> length) : base("Random")
         {
             Length = length;
         }
@@ -46,8 +46,8 @@ namespace TuringMachine.Core.Inputs
         {
             if (obj == null) return false;
 
-            return Equals((FuzzingInputBase)obj)
-                && Length.Equals(obj.Length);
+            return base.Equals(obj)
+                && obj.Length.EqualWithNullCheck(Length);
         }
 
         /// <summary>
@@ -56,6 +56,21 @@ namespace TuringMachine.Core.Inputs
         /// <param name="obj">Object</param>
         /// <returns>Return true if are equals</returns>
         public override bool Equals(object obj)
+        {
+            if (obj is RandomFuzzingInput o)
+            {
+                return Equals(o);
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// Equals
+        /// </summary>
+        /// <param name="obj">Object</param>
+        /// <returns>Return true if are equals</returns>
+        public override bool Equals(FuzzingInputBase obj)
         {
             if (obj is RandomFuzzingInput o)
             {

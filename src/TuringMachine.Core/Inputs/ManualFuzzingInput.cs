@@ -41,8 +41,8 @@ namespace TuringMachine.Core.Inputs
         {
             if (obj == null) return false;
 
-            return Equals((FuzzingInputBase)obj)
-                && ((Data == null && obj.Data == null) || Data.SequenceEqual(obj.Data));
+            return base.Equals(obj)
+                && obj.Data.SequenceEqualWithNullCheck(Data);
         }
 
         /// <summary>
@@ -51,6 +51,21 @@ namespace TuringMachine.Core.Inputs
         /// <param name="obj">Object</param>
         /// <returns>Return true if are equals</returns>
         public override bool Equals(object obj)
+        {
+            if (obj is ManualFuzzingInput o)
+            {
+                return Equals(o);
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// Equals
+        /// </summary>
+        /// <param name="obj">Object</param>
+        /// <returns>Return true if are equals</returns>
+        public override bool Equals(FuzzingInputBase obj)
         {
             if (obj is ManualFuzzingInput o)
             {
