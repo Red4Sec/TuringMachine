@@ -211,7 +211,7 @@ namespace TuringMachine.Core
                                 }
                             }
 
-                            if (currentStreamPath != null)
+                            if (storeCurrentStream != null)
                             {
                                 // Delete current stream
 
