@@ -1,8 +1,9 @@
-﻿using TuringMachine.Core.Interfaces;
+﻿using System;
+using TuringMachine.Core.Interfaces;
 
 namespace TuringMachine.Core.Fuzzers.Mutational
 {
-    public interface IFilterChunk : IType, IWeight
+    public interface IChunkFilter : IType, IWeight, IEquatable<IChunkFilter>
     {
         /// <summary>
         /// Apply the filter

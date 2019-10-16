@@ -1,8 +1,8 @@
 ﻿using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
+using TuringMachine.Core.Extensions;
 using TuringMachine.Core.Helpers;
 using TuringMachine.Core.Interfaces;
 
@@ -160,11 +160,11 @@ namespace TuringMachine.Core.Logs
         public override int GetHashCode()
         {
             var hashCode = -869128546;
-            hashCode = hashCode * -1521134295 + Source.GetHashCode();
-            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(Description);
-            hashCode = hashCode * -1521134295 + Tests.GetHashCode();
-            hashCode = hashCode * -1521134295 + Crashes.GetHashCode();
-            hashCode = hashCode * -1521134295 + Errors.GetHashCode();
+            hashCode = hashCode * -1521134295 + Source.GetHashCodeWithNullCheck();
+            hashCode = hashCode * -1521134295 + Description.GetHashCodeWithNullCheck();
+            hashCode = hashCode * -1521134295 + Tests.GetHashCodeWithNullCheck();
+            hashCode = hashCode * -1521134295 + Crashes.GetHashCodeWithNullCheck();
+            hashCode = hashCode * -1521134295 + Errors.GetHashCodeWithNullCheck();
             return hashCode;
         }
     }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Net;
+using TuringMachine.Core.Extensions;
 using TuringMachine.Core.Interfaces;
 
 namespace TuringMachine.Core.Fuzzers
@@ -50,8 +51,7 @@ namespace TuringMachine.Core.Fuzzers
         public override int GetHashCode()
         {
             var hashCode = 1594954113;
-            hashCode = hashCode * -1521134295 + BitConverter.ToInt32(EndPoint.Address.GetAddressBytes(), 0);
-            hashCode = hashCode * -1521134295 + EndPoint.Port.GetHashCode();
+            hashCode = hashCode * -1521134295 + EndPoint.GetHashCodeWithNullCheck();
             return hashCode;
         }
     }

@@ -1,10 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
-using TuringMachine.Core.Helpers;
+using TuringMachine.Core.Extensions;
 using TuringMachine.Core.Interfaces;
 
 namespace TuringMachine.Core.Inputs
@@ -97,8 +96,8 @@ namespace TuringMachine.Core.Inputs
         {
             var hashCode = -1289872652;
             hashCode = hashCode * -1521134295 + base.GetHashCode();
-            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(EndPoint.ToString());
-            hashCode = hashCode * -1521134295 + BitConverter.ToInt32(HashHelper.Sha256(Request), 0);
+            hashCode = hashCode * -1521134295 + EndPoint.GetHashCodeWithNullCheck();
+            hashCode = hashCode * -1521134295 + Request.GetHashCodeWithNullCheck();
             return hashCode;
         }
     }

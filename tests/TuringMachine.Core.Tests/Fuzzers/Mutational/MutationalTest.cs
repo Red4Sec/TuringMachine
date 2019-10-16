@@ -4,7 +4,9 @@ using NUnit.Framework;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using TuringMachine.Core.Collections;
 using TuringMachine.Core.Fuzzers.Mutational;
+using TuringMachine.Core.Fuzzers.Mutational.Filters;
 using TuringMachine.Core.Helpers;
 using TuringMachine.Core.Inputs;
 using TuringMachine.Core.Interfaces;
@@ -140,7 +142,6 @@ namespace TuringMachine.Core.Tests.Fuzzers.Mutational
             // Test deserialization
 
             var value = File.ReadAllText("Samples/MutationalSample.fmut");
-
             var config = SerializationHelper.DeserializeFromJson<MutationConfig>(value);
 
             Assert.AreEqual("ceb9d9e9-37d1-4a4a-9cb9-d2f4d31c1d22", config.Id.ToString());
@@ -150,7 +151,7 @@ namespace TuringMachine.Core.Tests.Fuzzers.Mutational
 
             var entry = config.Mutations[0];
 
-            Assert.AreEqual("Changes", entry.Description);
+            Assert.AreEqual("First change", entry.Description);
             Assert.AreEqual(EFuzzingPercentType.PeerByte, entry.FuzzPercentType);
             Assert.IsTrue(new FixedValue<double>(5).Equals(entry.FuzzPercent));
             Assert.IsTrue(new FromToValue<ushort>(0, 2).Equals(entry.MaxChanges));
@@ -164,7 +165,28 @@ namespace TuringMachine.Core.Tests.Fuzzers.Mutational
                 Weight = 1,
                 AppendIterations = new FixedValue<ushort>(1),
                 RemoveLength = new FixedValue<ushort>(1),
-                Append = new MutationalFromTo(1, 2)
+                Append = new MutationalFromTo(1, 2),
+                Filter = new WeightCollection<IChunkFilter>
+                (
+                    new MixCaseFilter()
+                    {
+                        FilterPercent = new FromToValue<double>(0, 10),
+                        MixType = MixCaseFilter.MixCaseType.ToLowerCase,
+                        Weight = 1
+                    },
+                    new MixCaseFilter()
+                    {
+                        FilterPercent = new FromToValue<double>(0, 10),
+                        MixType = MixCaseFilter.MixCaseType.ToUpperCase,
+                        Weight = 1
+                    },
+                    new MixCaseFilter()
+                    {
+                        FilterPercent = new FromToValue<double>(0, 10),
+                        MixType = MixCaseFilter.MixCaseType.ChangeCase,
+                        Weight = 1
+                    }
+                )
             }
             .Equals(entry.Changes[0]));
 

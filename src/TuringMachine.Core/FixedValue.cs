@@ -4,29 +4,29 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
-using TuringMachine.Core.Converters;
+using TuringMachine.Core.Extensions;
 using TuringMachine.Core.Helpers;
 using TuringMachine.Core.Interfaces;
 
 namespace TuringMachine.Core
 {
-    [JsonConverter(typeof(JsonFromToConverter))]
     [DebuggerDisplay(SerializationHelper.DebuggerDisplay)]
-    public class FixedValue<T> : IGetValue<T>, IEquatable<FixedValue<T>>
+    public class FixedValue<T> : IGetValue<T>, IEquatable<FixedValue<T>>, IType
         where T : IComparable, IEquatable<T>, IComparable<T>
     {
-        /// <summary>
-        /// From
-        /// </summary>
-        [Category("Values")]
-        public List<T> Allowed { get; set; }
-
         /// <summary>
         /// Class Name
         /// </summary>
         [ReadOnly(true)]
         [Browsable(false)]
+        [JsonProperty(Order = 0)]
         public string Type => "Fixed";
+
+        /// <summary>
+        /// From
+        /// </summary>
+        [Category("Values")]
+        public IList<T> Allowed { get; set; }
 
         /// <summary>
         /// Constructor
@@ -44,7 +44,10 @@ namespace TuringMachine.Core
         {
             if (values != null)
             {
-                Allowed.AddRange(values);
+                foreach (var entry in values)
+                {
+                    Allowed.Add(entry);
+                }
             }
         }
 
@@ -77,6 +80,16 @@ namespace TuringMachine.Core
             return Equals(o);
         }
 
+        public bool Equals(IGetValue<T> obj)
+        {
+            if (!(obj is FixedValue<T> o))
+            {
+                return false;
+            }
+
+            return Equals(o);
+        }
+
         public bool Equals(FixedValue<T> obj)
         {
             if (obj == null) return false;
@@ -92,8 +105,8 @@ namespace TuringMachine.Core
         public override int GetHashCode()
         {
             var hashCode = -972130872;
-            hashCode = hashCode * -1521134295 + Type.GetHashCode();
-            hashCode = hashCode * -1521134295 + Allowed.Sum(u => u.GetHashCode());
+            hashCode = hashCode * -1521134295 + Type.GetHashCodeWithNullCheck();
+            hashCode = hashCode * -1521134295 + Allowed.GetHashCodeWithNullCheck();
             return hashCode;
         }
     }

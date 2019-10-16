@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Diagnostics;
+using TuringMachine.Core.Extensions;
 using TuringMachine.Core.Fuzzers.Patch;
 using TuringMachine.Core.Helpers;
 
@@ -66,9 +67,9 @@ namespace TuringMachine.Core.Interfaces
         public override int GetHashCode()
         {
             var hashCode = -106078415;
-            hashCode = hashCode * -1521134295 + Type.GetHashCode();
-            hashCode = hashCode * -1521134295 + Description.GetHashCode();
-            hashCode = hashCode * -1521134295 + BitConverter.ToInt32(Id.ToByteArray(), 0);
+            hashCode = hashCode * -1521134295 + Type.GetHashCodeWithNullCheck();
+            hashCode = hashCode * -1521134295 + Description.GetHashCodeWithNullCheck();
+            hashCode = hashCode * -1521134295 + Id.GetHashCodeWithNullCheck();
             return hashCode;
         }
     }

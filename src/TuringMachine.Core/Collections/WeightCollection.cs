@@ -1,15 +1,38 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Linq;
+using TuringMachine.Core.Extensions;
 using TuringMachine.Core.Helpers;
 using TuringMachine.Core.Interfaces;
 
 namespace TuringMachine.Core.Collections
 {
-    public class WeightCollection<T> : ObservableCollection<T>, IRandomValue<T> where T : IWeight
+    public class WeightCollection<T> : ObservableCollection<T>, IRandomValue<T>, IEquatable<WeightCollection<T>>
+        where T : IWeight, IEquatable<T>
     {
         private T[] _Steps = new T[0];
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        public WeightCollection() { }
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="entries">Entries</param>
+        public WeightCollection(params T[] entries)
+        {
+            if (entries != null)
+            {
+                foreach (var entry in entries)
+                {
+                    Add(entry);
+                }
+            }
+        }
 
         /// <summary>
         /// Recalculate weight list
@@ -42,5 +65,33 @@ namespace TuringMachine.Core.Collections
         /// </summary>
         /// <returns>T</returns>
         public T Get() => RandomHelper.GetRandom(_Steps);
+
+        public override bool Equals(object obj)
+        {
+            if (!(obj is WeightCollection<T> o))
+            {
+                return false;
+            }
+
+            return Equals(o);
+        }
+
+        public bool Equals(WeightCollection<T> obj)
+        {
+            if (obj == null) return false;
+
+            return obj.SequenceEqual(obj);
+        }
+
+        /// <summary>
+        /// GetHashCode
+        /// </summary>
+        /// <returns>Hash code</returns>
+        public override int GetHashCode()
+        {
+            var hashCode = -1435047217;
+            hashCode = hashCode * -1521134295 + ((IEnumerable)this).GetHashCodeWithNullCheck();
+            return hashCode;
+        }
     }
 }

@@ -1,7 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
+using TuringMachine.Core.Extensions;
 using TuringMachine.Core.Helpers;
 
 namespace TuringMachine.Core.Interfaces
@@ -72,9 +72,9 @@ namespace TuringMachine.Core.Interfaces
         public override int GetHashCode()
         {
             var hashCode = 1636442590;
-            hashCode = hashCode * -1521134295 + BitConverter.ToInt32(Id.ToByteArray(), 0);
-            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(Description);
-            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(Type);
+            hashCode = hashCode * -1521134295 + Id.GetHashCodeWithNullCheck();
+            hashCode = hashCode * -1521134295 + Description.GetHashCodeWithNullCheck();
+            hashCode = hashCode * -1521134295 + Type.GetHashCodeWithNullCheck();
             return hashCode;
         }
     }

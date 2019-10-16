@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Linq;
-using TuringMachine.Core.Helpers;
+using TuringMachine.Core.Extensions;
 using TuringMachine.Core.Interfaces;
 
 namespace TuringMachine.Core.Inputs
@@ -68,7 +68,7 @@ namespace TuringMachine.Core.Inputs
         {
             var hashCode = -1289872652;
             hashCode = hashCode * -1521134295 + base.GetHashCode();
-            hashCode = hashCode * -1521134295 + BitConverter.ToInt32(HashHelper.Sha256(Data), 0);
+            hashCode = hashCode * -1521134295 + Data.GetHashCodeWithNullCheck();
             return hashCode;
         }
     }

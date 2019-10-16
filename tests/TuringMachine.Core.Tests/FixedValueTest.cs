@@ -26,7 +26,8 @@ namespace TuringMachine.Core.Tests
         {
             var entry = new FixedValue<byte>();
 
-            entry.Allowed.AddRange(new byte[] { 1, 2 });
+            entry.Allowed.Add(1);
+            entry.Allowed.Add(2);
 
             var copy = new FixedValue<byte>(1, 2);
 

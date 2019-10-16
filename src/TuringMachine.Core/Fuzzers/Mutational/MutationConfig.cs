@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using TuringMachine.Core.Extensions;
 using TuringMachine.Core.Fuzzers.Patch;
 using TuringMachine.Core.Interfaces;
 
@@ -94,7 +95,7 @@ namespace TuringMachine.Core.Fuzzers.Mutational
         {
             var hashCode = -106078415;
             hashCode = hashCode * -1521134295 + base.GetHashCode();
-            hashCode = hashCode * -1521134295 + Mutations.Sum(u => (long)u.GetHashCode()).GetHashCode();
+            hashCode = hashCode * -1521134295 + Mutations.GetHashCodeWithNullCheck();
             return hashCode;
         }
     }
