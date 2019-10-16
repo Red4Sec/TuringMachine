@@ -80,7 +80,7 @@ namespace TuringMachine.Core.Collections
         {
             if (obj == null) return false;
 
-            return obj.SequenceEqual(obj);
+            return this.SequenceEqual(obj);
         }
 
         /// <summary>

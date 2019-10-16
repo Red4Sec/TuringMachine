@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using NUnit.Framework;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -24,7 +25,9 @@ namespace TuringMachine.Core.Tests.Fuzzers.Mutational
 
             Assert.IsTrue(config.Equals(copy));
             Assert.IsTrue(config.Equals((object)copy));
+            Assert.IsTrue(config.Equals((IMutation)copy));
             Assert.IsFalse(config.Equals(new object()));
+            Assert.IsFalse(config.Equals(new MutationalFromTo()));
             Assert.AreEqual(config.GetHashCode(), copy.GetHashCode());
 
             var json = SerializationHelper.SerializeToJson(config);
@@ -42,6 +45,7 @@ namespace TuringMachine.Core.Tests.Fuzzers.Mutational
             copy = new MutationalChunk("a", "b");
 
             Assert.IsFalse(config.Equals(copy));
+            Assert.IsFalse(config.Equals((IMutation)copy));
         }
 
         [Test]
@@ -53,12 +57,14 @@ namespace TuringMachine.Core.Tests.Fuzzers.Mutational
             Assert.IsTrue(config.Equals(copy));
             Assert.IsTrue(config.Equals((object)copy));
             Assert.IsFalse(config.Equals(new object()));
+            Assert.IsFalse(config.Equals(new MutationalChunk()));
             Assert.AreEqual(config.GetHashCode(), copy.GetHashCode());
 
             var json = SerializationHelper.SerializeToJson(config);
             config = SerializationHelper.DeserializeFromJson<MutationalFromTo>(json);
 
             Assert.IsTrue(config.Equals(copy));
+            Assert.IsTrue(config.Equals((IMutation)copy));
             Assert.IsTrue(config.Equals((object)copy));
             Assert.IsFalse(config.Equals(new object()));
             Assert.AreEqual(config.GetHashCode(), copy.GetHashCode());
@@ -69,6 +75,7 @@ namespace TuringMachine.Core.Tests.Fuzzers.Mutational
             copy = new MutationalFromTo(1);
 
             Assert.IsFalse(config.Equals(copy));
+            Assert.IsFalse(config.Equals((IMutation)copy));
         }
 
         [Test]
@@ -367,8 +374,14 @@ namespace TuringMachine.Core.Tests.Fuzzers.Mutational
                 }
             }
 
+            // Argument excepcion
+
+            entry.FuzzPercentType = (EFuzzingPercentType)197;
+            Assert.Throws<ArgumentException>(() => entry.Get(null, 0, 0));
+
             // Only offset 5
 
+            entry.FuzzPercentType = EFuzzingPercentType.PeerByte;
             entry.FuzzPercent = new FromToValue<double>(100);
             entry.ValidOffset = new FromToValue<long>(5);
 

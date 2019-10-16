@@ -162,9 +162,11 @@ namespace TuringMachine.Core.Fuzzers.Mutational
                         // Get Item
                         return Changes.Get();
                     }
+                default:
+                    {
+                        throw new ArgumentException(nameof(FuzzPercentType));
+                    }
             }
-
-            return null;
         }
 
         public override bool Equals(object obj)
