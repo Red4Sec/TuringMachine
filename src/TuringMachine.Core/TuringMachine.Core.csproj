@@ -1,11 +1,13 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <Title>Turing Machine Core</Title>
     <Authors>Red4Sec Cybersecurity S.L.</Authors>
     <Copyright>Red4Sec Cybersecurity S.L.</Copyright>
     <Description>Turing Machine is a Fuzzer developed in Net Standard that allows to fuzz any type of applications or libraries, focused on .Net Framework, Dotnet Core and Net Standard applications.</Description>
     <PackageProjectUrl>https://red4sec.com</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/Red4Sec/TuringMachine</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <RepositoryUrl>https://github.com/Red4Sec/TuringMachine.git</RepositoryUrl>
     <PackageTags>Fuzzer Fuzzing Hacking Red4Sec</PackageTags>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <TargetsForTfmSpecificBuildOutput>$(TargetsForTfmSpecificBuildOutput);CopyProjectReferencesToPackage</TargetsForTfmSpecificBuildOutput>
@@ -13,12 +15,26 @@
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <IsPackable>true</IsPackable>
     <EmbedLocalReferences>true</EmbedLocalReferences>
+    <PackageIcon>icon.png</PackageIcon>
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
   </PropertyGroup>
 
   <ItemGroup>
-    
+    <None Include="..\..\LICENSE">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+    <None Include="icon.png">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+
     <!--For nuget references-->
-    
+
     <PackageReference Include="Microsoft.Extensions.FileSystemGlobbing" Version="3.0.0" />
     <PackageReference Include="Mono.Cecil" Version="0.11.0" />
     <PackageReference Include="System.Reflection.Metadata" Version="1.7.0" />
@@ -26,7 +42,7 @@
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="3.0.0" />
 
     <!--Real references-->
-    
+
     <PackageReference Include="CommandLineParser" Version="2.6.0" />
     <PackageReference Include="Microsoft.Win32.Registry" Version="4.6.0" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
@@ -42,7 +58,7 @@
   </PropertyGroup>
 
   <!--Add coverlet library-->
-  
+
   <ItemGroup>
     <ProjectReference Include="..\..\submodules\coverlet\src\coverlet.core\coverlet.core.csproj" PrivateAssets="all">
       <ReferenceOutputAssembly>true</ReferenceOutputAssembly>
