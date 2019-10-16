@@ -36,7 +36,7 @@ namespace TuringMachine.Core.Converters
 
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
-            var item = (IMutation)value;
+            var item = (IChunkFilter)value;
 
             switch (item.Type)
             {

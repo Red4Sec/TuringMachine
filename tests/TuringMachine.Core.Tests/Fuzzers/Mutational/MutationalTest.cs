@@ -149,7 +149,7 @@ namespace TuringMachine.Core.Tests.Fuzzers.Mutational
             // Test deserialization
 
             var value = File.ReadAllText("Samples/MutationalSample.fmut");
-            var config = SerializationHelper.DeserializeFromJson<MutationConfig>(value);
+            var config = (MutationConfig)SerializationHelper.DeserializeFromJson<FuzzingConfigBase>(value);
 
             Assert.AreEqual("ceb9d9e9-37d1-4a4a-9cb9-d2f4d31c1d22", config.Id.ToString());
             Assert.AreEqual("Test", config.Description);
