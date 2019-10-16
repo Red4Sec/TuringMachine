@@ -5,7 +5,7 @@
     <Authors>Red4Sec Cybersecurity S.L.</Authors>
     <Copyright>Red4Sec Cybersecurity S.L.</Copyright>
     <Description>Turing Machine is a Fuzzer developed in Net Standard that allows to fuzz any type of applications or libraries, focused on .Net Framework, Dotnet Core and Net Standard applications.</Description>
-    <PackageProjectUrl>https://red4sec.com</PackageProjectUrl>
+    <PackageProjectUrl>https://github.com/Red4Sec/TuringMachine</PackageProjectUrl>
     <RepositoryType>git</RepositoryType>
     <RepositoryUrl>https://github.com/Red4Sec/TuringMachine.git</RepositoryUrl>
     <PackageTags>Fuzzer Fuzzing Hacking Red4Sec</PackageTags>
