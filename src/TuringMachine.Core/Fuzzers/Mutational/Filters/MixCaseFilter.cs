@@ -1,5 +1,7 @@
-﻿using System.ComponentModel;
+﻿using Newtonsoft.Json;
+using System.ComponentModel;
 using System.Diagnostics;
+using TuringMachine.Core.Converters;
 using TuringMachine.Core.Extensions;
 using TuringMachine.Core.Helpers;
 using TuringMachine.Core.Interfaces;
@@ -78,6 +80,7 @@ namespace TuringMachine.Core.Fuzzers.Mutational.Filters
         /// Filter Percent
         /// </summary>
         [Category("1 - Condition")]
+        [JsonConverter(typeof(IGetValueConverter))]
         public IGetValue<double> FilterPercent { get; set; }
 
         /// <summary>

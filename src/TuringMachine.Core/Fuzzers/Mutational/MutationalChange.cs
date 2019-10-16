@@ -1,7 +1,9 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.ComponentModel;
 using System.Diagnostics;
 using TuringMachine.Core.Collections;
+using TuringMachine.Core.Converters;
 using TuringMachine.Core.Extensions;
 using TuringMachine.Core.Fuzzers.Patch;
 using TuringMachine.Core.Helpers;
@@ -31,6 +33,7 @@ namespace TuringMachine.Core.Fuzzers.Mutational
         /// </summary>
         [Category("1 - Append")]
         [Description("Set the kind of bytes for add")]
+        [JsonConverter(typeof(IMutationConverter))]
         public IMutation Append { get; set; }
 
         /// <summary>
@@ -38,6 +41,7 @@ namespace TuringMachine.Core.Fuzzers.Mutational
         /// </summary>
         [Category("1 - Append")]
         [Description("Set the append length value")]
+        [JsonConverter(typeof(IGetValueConverter))]
         public IGetValue<ushort> AppendIterations { get; set; }
 
         /// <summary>
@@ -45,6 +49,7 @@ namespace TuringMachine.Core.Fuzzers.Mutational
         /// </summary>
         [Category("2 - Remove")]
         [Description("Set the remove length value")]
+        [JsonConverter(typeof(IGetValueConverter))]
         public IGetValue<ushort> RemoveLength { get; set; }
 
         /// <summary>

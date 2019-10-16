@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using TuringMachine.Core.Collections;
+using TuringMachine.Core.Converters;
 using TuringMachine.Core.Extensions;
 using TuringMachine.Core.Helpers;
 using TuringMachine.Core.Interfaces;
@@ -24,6 +25,7 @@ namespace TuringMachine.Core.Fuzzers.Mutational
         /// Valid offset
         /// </summary>
         [Category("1 - Condition")]
+        [JsonConverter(typeof(IGetValueConverter))]
         public IGetValue<long> ValidOffset { get; set; }
 
         /// <summary>
@@ -36,6 +38,7 @@ namespace TuringMachine.Core.Fuzzers.Mutational
         /// Fuzz Percent
         /// </summary>
         [Category("1 - Condition")]
+        [JsonConverter(typeof(IGetValueConverter))]
         public IGetValue<double> FuzzPercent { get; set; }
 
         /// <summary>
@@ -49,6 +52,7 @@ namespace TuringMachine.Core.Fuzzers.Mutational
         /// MaxChanges
         /// </summary>
         [Category("1 - Condition")]
+        [JsonConverter(typeof(IGetValueConverter))]
         public IGetValue<ushort> MaxChanges { get; set; }
 
         private class Step
