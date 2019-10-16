@@ -55,6 +55,7 @@ namespace TuringMachine.Core.Tests.Inputs
             Assert.IsTrue(value.Equals(copy));
             Assert.IsTrue(value.Equals((object)copy));
             Assert.IsFalse(value.Equals(new object()));
+            Assert.IsFalse(value.Equals((FuzzingInputBase)new FileFuzzingInput()));
             Assert.AreEqual(value.GetHashCode(), copy.GetHashCode());
 
             value.Id = Guid.NewGuid();
@@ -93,6 +94,7 @@ namespace TuringMachine.Core.Tests.Inputs
             Assert.IsTrue(value.Equals(copy));
             Assert.IsTrue(value.Equals((object)copy));
             Assert.IsFalse(value.Equals(new object()));
+            Assert.IsFalse(value.Equals((FuzzingInputBase)new FileFuzzingInput()));
             Assert.AreEqual(value.GetHashCode(), copy.GetHashCode());
 
             value.Id = Guid.NewGuid();
@@ -148,6 +150,7 @@ namespace TuringMachine.Core.Tests.Inputs
             Assert.IsTrue(value.Equals(copy));
             Assert.IsTrue(value.Equals((object)copy));
             Assert.IsFalse(value.Equals(new object()));
+            Assert.IsFalse(value.Equals((FuzzingInputBase)new FileFuzzingInput()));
             Assert.AreEqual(value.GetHashCode(), copy.GetHashCode());
 
             value.Id = Guid.NewGuid();
@@ -193,6 +196,7 @@ namespace TuringMachine.Core.Tests.Inputs
             Assert.IsTrue(value.Equals(copy));
             Assert.IsTrue(value.Equals((object)copy));
             Assert.IsFalse(value.Equals(new object()));
+            Assert.IsFalse(value.Equals((FuzzingInputBase)new RandomFuzzingInput()));
             Assert.AreEqual(value.GetHashCode(), copy.GetHashCode());
 
             value.Id = Guid.NewGuid();
@@ -247,6 +251,7 @@ Accept-Language: en-US,en;q=0.8,es;q=0.6
             Assert.IsTrue(value.Equals(copy));
             Assert.IsTrue(value.Equals((object)copy));
             Assert.IsFalse(value.Equals(new object()));
+            Assert.IsFalse(value.Equals((FuzzingInputBase)new RandomFuzzingInput()));
             Assert.AreEqual(value.GetHashCode(), copy.GetHashCode());
 
             value.Id = Guid.NewGuid();
