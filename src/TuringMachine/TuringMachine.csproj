@@ -1,13 +1,38 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp2.2</TargetFramework>
     <StartupObject>TuringMachine.Program</StartupObject>
+    <Title>Turing Machine</Title>
+    <Authors>Red4Sec Cybersecurity S.L.</Authors>
+    <Copyright>Red4Sec Cybersecurity S.L.</Copyright>
+    <Description>Turing Machine is a Fuzzer developed in Net Standard that allows to fuzz any type of applications or libraries, focused on .Net Framework, Dotnet Core and Net Standard applications.</Description>
+    <PackageProjectUrl>https://github.com/Red4Sec/TuringMachine</PackageProjectUrl>
+    <RepositoryType>git</RepositoryType>
+    <RepositoryUrl>https://github.com/Red4Sec/TuringMachine.git</RepositoryUrl>
+    <PackageTags>Fuzzer Fuzzing Hacking Red4Sec</PackageTags>
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
   </PropertyGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\TuringMachine.Core\TuringMachine.Core.csproj" />
   </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\..\LICENSE">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+  </ItemGroup>
+
+  <!--Replicate roslyn's version pattern logic https://github.com/dotnet/cli/issues/6923#issuecomment-354095128 -->
+
+  <PropertyGroup>
+    <Build>$([System.DateTime]::op_Subtraction($([System.DateTime]::get_Now().get_Date()),$([System.DateTime]::new(2000,1,1))).get_TotalDays())</Build>
+    <Revision>$([MSBuild]::Divide($([System.DateTime]::get_Now().get_TimeOfDay().get_TotalSeconds()), 2).ToString('F0'))</Revision>
+    <Version>1.0.$(Build).$(Revision)</Version>
+  </PropertyGroup>
 
 </Project>

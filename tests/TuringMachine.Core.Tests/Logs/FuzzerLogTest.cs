@@ -108,6 +108,28 @@ namespace TuringMachine.Core.Tests.Logs
         }
 
         [Test]
+        public void FromCurrentFileError()
+        {
+            var fileName = "X.X.current";
+            CoverageHelper.CurrentCoverage = 12.34;
+
+            using (var file = File.Create(fileName))
+            {
+                file.Write(new byte[] { 0x01, 0x02, 0x03 });
+                file.Close();
+            }
+
+            var log = FuzzerLog.FromCurrentFile(fileName, new Exception("Test"), "log123");
+            File.Delete(fileName);
+
+            Assert.AreEqual(Guid.Empty, log.InputId);
+            Assert.AreEqual(Guid.Empty, log.ConfigId);
+            Assert.AreEqual(12.34D, log.Coverage);
+
+            CheckLogError(fileName, log.Error);
+        }
+
+        [Test]
         public void FromCurrentFile()
         {
             var inputId = Guid.NewGuid();
@@ -127,9 +149,15 @@ namespace TuringMachine.Core.Tests.Logs
             Assert.AreEqual(inputId, log.InputId);
             Assert.AreEqual(configId, log.ConfigId);
             Assert.AreEqual(12.34D, log.Coverage);
-            Assert.NotNull(log.Error);
 
-            using (var stream = new MemoryStream(log.Error.ReplicationData))
+            CheckLogError(fileName, log.Error);
+        }
+
+        private void CheckLogError(string fileName, FuzzerError error)
+        {
+            Assert.NotNull(error);
+
+            using (var stream = new MemoryStream(error.ReplicationData))
             using (var archive = new ZipArchive(stream, ZipArchiveMode.Read, true))
             {
                 // Log
