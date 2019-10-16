@@ -7,6 +7,7 @@ using System.Threading;
 using TuringMachine.Core.Exceptions;
 using TuringMachine.Core.Fuzzers;
 using TuringMachine.Core.Fuzzers.Patch;
+using TuringMachine.Core.Helpers;
 using TuringMachine.Core.Inputs;
 using TuringMachine.Core.Interfaces;
 using TuringMachine.Core.Logs;
@@ -72,9 +73,12 @@ namespace TuringMachine.Core.Tests
 
                 // Dummy input
 
-                var entryI = new FuzzerStat<FuzzingInputBase>(new ManualFuzzingInput(new byte[0]) { Description = "1" });
+                var entryIBuffer = new byte[100];
+                RandomHelper.FillWithRandomBytes(entryIBuffer);
+
+                var entryI = new FuzzerStat<FuzzingInputBase>(new ManualFuzzingInput(entryIBuffer) { Description = "1" });
                 server.Inputs.Add(entryI.Source.Id, entryI);
-                entryI = new FuzzerStat<FuzzingInputBase>(new RandomFuzzingInput(new FromToValue<long>(1, 2)) { Description = "2" });
+                entryI = new FuzzerStat<FuzzingInputBase>(new RandomFuzzingInput(new FromToValue<long>(100, 200)) { Description = "2" });
                 server.Inputs.Add(entryI.Source.Id, entryI);
 
                 // Dummy configurations
@@ -335,7 +339,11 @@ namespace TuringMachine.Core.Tests
                     StoreCurrent = true,
                     OnLog = (l, c) =>
                     {
-                        logReaded = File.ReadAllBytes(((FileStream)fuzStream.CurrentStream).Name);
+                        // Read current file
+
+                        var fCurrent = ((FileStream)fuzStream.CurrentStream);
+                        fCurrent.Seek(0, SeekOrigin.Begin);
+                        Array.Resize(ref logReaded, fCurrent.Read(logReaded, 0, logReaded.Length));
                         c.Cancel = true;
                     },
                 });

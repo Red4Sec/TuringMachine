@@ -197,20 +197,12 @@ namespace TuringMachine.Core
                                 // Free current stream
 
                                 currentStreamPath = $"{input.Id}.{config.Id}.{Process.GetCurrentProcess().Id}.{args.TaskId}.current";
-                                storeCurrentStream = new FileStream(currentStreamPath, FileMode.Create, FileAccess.Write, FileShare.Read);
+                                storeCurrentStream = new FileStream(currentStreamPath, FileMode.Create, FileAccess.ReadWrite, FileShare.Read);
                             }
 
                             using (var stream = new FuzzingStream(config, input, storeCurrentStream))
                             {
                                 var log = Client.Execute(action, stream);
-
-                                if (storeCurrentStream != null)
-                                {
-                                    // Free current stream
-
-                                    storeCurrentStream.Close();
-                                    storeCurrentStream.Dispose();
-                                }
 
                                 if (log != null)
                                 {
@@ -223,6 +215,8 @@ namespace TuringMachine.Core
                             {
                                 // Delete current stream
 
+                                storeCurrentStream.Close();
+                                storeCurrentStream.Dispose();
                                 File.Delete(currentStreamPath);
                             }
                         }
