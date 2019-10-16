@@ -49,13 +49,13 @@ namespace TuringMachine.Core.Interfaces
         /// </summary>
         /// <param name="obj">Object</param>
         /// <returns>Return true if are equals</returns>
-        public bool Equals(FuzzingInputBase obj)
+        public virtual bool Equals(FuzzingInputBase obj)
         {
             if (obj == null) return false;
 
-            return Type == obj.Type
-                && Id.Equals(obj.Id)
-                && Description == Description;
+            return obj.Type == Type
+                && obj.Id.Equals(Id)
+                && obj.Description == Description;
         }
 
         /// <summary>

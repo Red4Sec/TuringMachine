@@ -79,6 +79,16 @@ namespace TuringMachine.Core.Fuzzers.Mutational
             return Equals(o);
         }
 
+        public override bool Equals(FuzzingConfigBase obj)
+        {
+            if (!(obj is MutationConfig o))
+            {
+                return false;
+            }
+
+            return Equals(o);
+        }
+
         public bool Equals(MutationConfig obj)
         {
             if (obj == null) return false;

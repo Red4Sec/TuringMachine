@@ -44,13 +44,13 @@ namespace TuringMachine.Core.Interfaces
 
         public abstract void InitFor(FuzzingStream stream);
 
-        public bool Equals(FuzzingConfigBase obj)
+        public virtual bool Equals(FuzzingConfigBase obj)
         {
             if (obj == null) return false;
 
             return obj.Type == Type
                 && obj.Id == Id
-                && obj.Description == obj.Description;
+                && obj.Description == Description;
         }
 
         /// <summary>

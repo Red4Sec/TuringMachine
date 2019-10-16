@@ -66,6 +66,16 @@ namespace TuringMachine.Core.Fuzzers.Patch
             return Equals(o);
         }
 
+        public override bool Equals(FuzzingConfigBase obj)
+        {
+            if (!(obj is PatchConfig o))
+            {
+                return false;
+            }
+
+            return Equals(o);
+        }
+
         public bool Equals(PatchConfig obj)
         {
             if (obj == null) return false;

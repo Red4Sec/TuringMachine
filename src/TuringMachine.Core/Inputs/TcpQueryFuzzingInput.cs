@@ -68,9 +68,9 @@ namespace TuringMachine.Core.Inputs
         {
             if (obj == null) return false;
 
-            return Equals((FuzzingInputBase)obj)
-                && EndPoint.Equals(obj.EndPoint)
-                && ((Request == null && obj.Request == null) || Request.SequenceEqual(obj.Request));
+            return base.Equals(obj)
+                && obj.EndPoint.Equals(EndPoint)
+                && ((obj.Request == null && Request == null) || Request.SequenceEqual(obj.Request));
         }
 
         /// <summary>
@@ -79,6 +79,21 @@ namespace TuringMachine.Core.Inputs
         /// <param name="obj">Object</param>
         /// <returns>Return true if are equals</returns>
         public override bool Equals(object obj)
+        {
+            if (obj is TcpQueryFuzzingInput o)
+            {
+                return Equals(o);
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// Equals
+        /// </summary>
+        /// <param name="obj">Object</param>
+        /// <returns>Return true if are equals</returns>
+        public override bool Equals(FuzzingInputBase obj)
         {
             if (obj is TcpQueryFuzzingInput o)
             {
