@@ -1,28 +1,22 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
-using TuringMachine.Core.Interfaces;
+using TuringMachine.Core.Fuzzers.Mutational;
 
 namespace TuringMachine.Core.Converters
 {
-    internal class GetValueConverter : JsonConverter
+    internal class IMutationConverter : JsonConverter
     {
-        private static readonly Type[] _ExpectedTypes = new Type[]
-        {
-            typeof(IGetValue<double>),
-            typeof(IGetValue<ushort>),
-            typeof(IGetValue<long>)
-        };
+        private static readonly Type _ExpectedType = typeof(IMutation);
 
         public override bool CanConvert(Type objectType)
         {
-            return Array.IndexOf(_ExpectedTypes, objectType) >= 0;
+            return objectType == _ExpectedType;
         }
 
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
             var jObject = JObject.Load(reader);
-            var tar = objectType.GenericTypeArguments[0];
 
             if (jObject.Property("Type") != null)
             {
@@ -30,14 +24,12 @@ namespace TuringMachine.Core.Converters
                 {
                     case "From-To":
                         {
-                            var type = typeof(FromToValue<>).MakeGenericType(tar);
-                            existingValue = jObject.ToObject(type, serializer);
+                            existingValue = jObject.ToObject<MutationalFromTo>(serializer);
                             break;
                         }
                     case "Fixed":
                         {
-                            var type = typeof(FixedValue<>).MakeGenericType(tar);
-                            existingValue = jObject.ToObject(type, serializer);
+                            existingValue = jObject.ToObject<MutationalChunk>(serializer);
                             break;
                         }
                 }
@@ -48,7 +40,7 @@ namespace TuringMachine.Core.Converters
 
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
-            var item = (IType)value;
+            var item = (IMutation)value;
 
             switch (item.Type)
             {

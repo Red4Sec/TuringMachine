@@ -6,7 +6,7 @@ using TuringMachine.Core.Fuzzers.Mutational.Filters;
 
 namespace TuringMachine.Core.Converters
 {
-    internal class ChunkFilterConverter : JsonConverter
+    internal class IChunkFilterConverter : JsonConverter
     {
         private static readonly Type _ExpectedType = typeof(IChunkFilter);
 
