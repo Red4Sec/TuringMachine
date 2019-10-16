@@ -125,7 +125,7 @@ namespace TuringMachine.Core.Fuzzers.Mutational
                 case EFuzzingPercentType.PeerByte:
                     {
                         // Check Max changes
-                        if (MaxChanges != null && 
+                        if (MaxChanges != null &&
                             stream.Log.Length >= MaxChanges.Get())
                         {
                             return null;
