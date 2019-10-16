@@ -1,11 +1,14 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.ComponentModel;
 using System.Diagnostics;
+using TuringMachine.Core.Converters;
 using TuringMachine.Core.Extensions;
 using TuringMachine.Core.Helpers;
 
 namespace TuringMachine.Core.Interfaces
 {
+    [JsonConverter(typeof(FuzzingInputBaseConverter))]
     [DebuggerDisplay(SerializationHelper.DebuggerDisplay)]
     public abstract class FuzzingInputBase : IType, IIdentificable, IEquatable<FuzzingInputBase>
     {
