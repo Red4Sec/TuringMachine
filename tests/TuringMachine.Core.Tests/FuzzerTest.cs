@@ -67,6 +67,10 @@ namespace TuringMachine.Core.Tests
             using (var server = new FuzzerServer())
             using (var client = new FuzzerClient())
             {
+                // Change name
+
+                client.PublicName = "TestClient_" + Guid.NewGuid().ToString();
+
                 // Ensure no error
 
                 client.SendLog(null);
@@ -143,7 +147,7 @@ namespace TuringMachine.Core.Tests
                 Assert.IsTrue(waitInput.WaitOne(TimeSpan.FromSeconds(10)), "Waiting for inputs");
 
                 Assert.AreEqual(1, server.Connections.Count);
-                Assert.IsTrue(!string.IsNullOrEmpty(server.Connections.Values.FirstOrDefault()?.Source.Description));
+                Assert.IsTrue(server.Connections.Values.FirstOrDefault()?.Source.Description.Contains(client.PublicName));
                 Assert.AreNotEqual(Guid.Empty, server.Connections.Values.FirstOrDefault()?.Source.Id);
                 Assert.AreNotEqual(Guid.Empty, server.Connections.Values.FirstOrDefault()?.Id);
 
