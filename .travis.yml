@@ -30,17 +30,17 @@ script:
   - cd tests/TuringMachine.Core.Tests
   - dotnet restore
   - find * -name *.csproj | xargs -I % dotnet add % package coverlet.msbuild
-  - dotnet test -v m /p:CollectCoverage=true /p:CoverletOutputFormat=opencover /p:CoverletOutput='../../src/TuringMachine.Core/coverage.xml' /p:Exclude=\"[coverlet.*]*,[*]Coverlet.Core*\"
+  - dotnet test -v m /p:CollectCoverage=true /p:CoverletOutputFormat=opencover /p:CoverletOutput='../../src/coverage.xml' /p:Exclude=\"[coverlet.*]*,[*]Coverlet.Core*\"
 after_success:
   - echo "Test Success - Branch($TRAVIS_BRANCH) Pull Request($TRAVIS_PULL_REQUEST) Tag($TRAVIS_TAG)"
   - #bash <(curl -s https://codecov.io/bash)
-  - #REPO_COMMIT_AUTHOR=$(git show -s --pretty=format:"%cn")
-  - #REPO_COMMIT_AUTHOR_EMAIL=$(git show -s --pretty=format:"%ce")
-  - #echo $REPO_COMMIT_AUTHOR
-  - #echo $REPO_COMMIT_AUTHOR_EMAIL
+  - REPO_COMMIT_AUTHOR=$(git show -s --pretty=format:"%cn")
+  - REPO_COMMIT_AUTHOR_EMAIL=$(git show -s --pretty=format:"%ce")
+  - echo $REPO_COMMIT_AUTHOR
+  - echo $REPO_COMMIT_AUTHOR_EMAIL
   - echo $TRAVIS_COMMIT_MESSAGE
   - echo $TRAVIS_COMMIT
   - echo $TRAVIS_BRANCH
   - echo $TRAVIS_JOB_ID
-  - cd ../../src/TuringMachine.Core/
+  - cd ../../src/
   - csmacnz.Coveralls --opencover -i coverage.xml --repoTokenVariable COVERALLS_REPO_TOKEN --useRelativePaths --commitId $TRAVIS_COMMIT --commitBranch $TRAVIS_BRANCH --jobId $TRAVIS_JOB_ID --commitMessage "$TRAVIS_COMMIT_MESSAGE"
