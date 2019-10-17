@@ -10,6 +10,32 @@ namespace TuringMachine.Core.Tests
     [TestFixture]
     public class FuzzingStreamTest
     {
+        class Disposable : IDisposable
+        {
+            public int IsDisposed = 0;
+
+            public void Dispose()
+            {
+                IsDisposed++;
+            }
+        }
+
+        [Test]
+        public void DisposeTest()
+        {
+            var original = new byte[90];
+            var disposed = new Disposable();
+
+            using (var stream = new FuzzingStream(null, original))
+            {
+                stream.Variables.Add(0, disposed);
+
+                Assert.AreEqual(0, disposed.IsDisposed);
+            }
+
+            Assert.AreEqual(1, disposed.IsDisposed);
+        }
+
         [Test]
         public void CleanTest()
         {
