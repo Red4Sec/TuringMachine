@@ -36,13 +36,11 @@ after_success:
   - #bash <(curl -s https://codecov.io/bash)
   - #REPO_COMMIT_AUTHOR=$(git show -s --pretty=format:"%cn")
   - #REPO_COMMIT_AUTHOR_EMAIL=$(git show -s --pretty=format:"%ce")
-  - #REPO_COMMIT_MESSAGE=$(git show -s --pretty=format:"%s")
   - #echo $REPO_COMMIT_AUTHOR
   - #echo $REPO_COMMIT_AUTHOR_EMAIL
-  - #echo $REPO_COMMIT_MESSAGE
+  - echo $TRAVIS_COMMIT_MESSAGE
   - echo $TRAVIS_COMMIT
   - echo $TRAVIS_BRANCH
   - echo $TRAVIS_JOB_ID
   - cd ../../src/TuringMachine.Core/
-  - csmacnz.Coveralls --opencover -i coverage.xml --repoTokenVariable COVERALLS_REPO_TOKEN --useRelativePaths --commitId $TRAVIS_COMMIT --commitBranch $TRAVIS_BRANCH --jobId $TRAVIS_JOB_ID 
- 
+  - csmacnz.Coveralls --opencover -i coverage.xml --repoTokenVariable COVERALLS_REPO_TOKEN --useRelativePaths --commitId $TRAVIS_COMMIT --commitBranch $TRAVIS_BRANCH --jobId $TRAVIS_JOB_ID --commitMessage "$TRAVIS_COMMIT_MESSAGE"
