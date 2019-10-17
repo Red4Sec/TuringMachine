@@ -43,6 +43,5 @@ after_success:
   - echo $TRAVIS_COMMIT
   - echo $TRAVIS_BRANCH
   - echo $TRAVIS_JOB_ID
-  - csmacnz.Coveralls --opencover -i coverage.xml --repoTokenVariable COVERALLS_REPO_TOKEN --basePath ../../src/TuringMachine.Core/
-  
-
+  - csmacnz.Coveralls --opencover -i coverage.xml --repoTokenVariable COVERALLS_REPO_TOKEN --basePath ../../src/TuringMachine.Core/ --commitId $TRAVIS_COMMIT --commitBranch $TRAVIS_BRANCH --jobId $TRAVIS_JOB_ID 
+ 
