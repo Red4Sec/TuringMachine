@@ -14,6 +14,7 @@ before_install:
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then ulimit -n 2048; fi
 install:
   - dotnet tool install -g dotnet-format --version 4.0.40103 --add-source https://dotnet.myget.org/F/format/api/v3/index.json
+  - dotnet tool install -g coveralls.net --version 1.0.0
   - export PATH="$PATH:$HOME/.dotnet/tools"
   - dotnet-format --version
 before_script:
@@ -31,4 +32,5 @@ script:
   - dotnet test -v m /p:CollectCoverage=true /p:CoverletOutputFormat=opencover
 after_success:
   - echo "Test Success - Branch($TRAVIS_BRANCH) Pull Request($TRAVIS_PULL_REQUEST) Tag($TRAVIS_TAG)"
-  - bash <(curl -s https://codecov.io/bash)
+  - #bash <(curl -s https://codecov.io/bash)
+  - dotnet csmacnz.coveralls --opencover -i coverage.xml --useRelativePaths
