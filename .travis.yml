@@ -43,6 +43,5 @@ after_success:
   - echo $REPO_COMMIT_AUTHOR_EMAIL
   - echo $REPO_COMMIT_MESSAGE
   - echo $TRAVIS_JOB_ID
-  - ls -la .
-  - csmacnz.Coveralls --opencover -i coverage.xml --repoToken $COVERALLS_REPO_TOKEN --useRelativePaths --serviceName travis-ci --commitId $TRAVIS_COMMIT --commitBranch $TRAVIS_BRANCH 
+  - csmacnz.Coveralls --opencover -i coverage.xml --repoToken $COVERALLS_REPO_TOKEN --useRelativePaths --serviceName travis-ci --commitId $TRAVIS_COMMIT --commitBranch $TRAVIS_BRANCH --jobId $TRAVIS_JOB_ID 
 
