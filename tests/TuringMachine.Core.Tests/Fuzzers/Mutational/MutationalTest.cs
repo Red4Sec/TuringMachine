@@ -340,6 +340,7 @@ namespace TuringMachine.Core.Tests.Fuzzers.Mutational
             entry.Changes.Add(new MutationalChange()
             {
                 Weight = 5,
+                Description = "Add A",
                 Append = new MutationalFromTo((byte)'A'),
                 RemoveLength = new FromToValue<ushort>(1),
                 AppendIterations = new FromToValue<ushort>(1)
@@ -348,6 +349,7 @@ namespace TuringMachine.Core.Tests.Fuzzers.Mutational
             {
                 // Remmove
                 Weight = 1,
+                Description = "Remove",
                 RemoveLength = new FromToValue<ushort>(1),
                 AppendIterations = new FromToValue<ushort>(1)
             });
@@ -407,13 +409,14 @@ namespace TuringMachine.Core.Tests.Fuzzers.Mutational
 
             // Max changes 2
 
+            entry.Changes.RemoveAt(1);
             entry.ValidOffset = new FromToValue<long>(0, long.MaxValue);
             entry.MaxChanges = new FromToValue<ushort>(2);
-
             input = new ManualFuzzingInput(new byte[100]);
+
             using (var stream = new FuzzingStream(config, input.GetStream()))
             {
-                stream.CopyTo(new MemoryStream(), 100);
+                stream.CopyTo(new MemoryStream(), 16);
 
                 Assert.AreEqual(2, stream.Log.Length);
                 Assert.AreEqual(0, stream.Log[0].Offset);

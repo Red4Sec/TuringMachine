@@ -35,6 +35,11 @@ namespace TuringMachine.Core.Extensions
         /// <returns>True if are equals</returns>
         public static bool SequenceEqualWithNullCheck<T>(this IList<T> a, IList<T> b)
         {
+            if (typeof(T) == typeof(byte[]))
+            {
+                return ChunkSequenceEqualWithNullCheck((IList<byte[]>)a, (IList<byte[]>)b);
+            }
+
             if ((a == null) != (b == null))
             {
                 return false;
@@ -50,7 +55,7 @@ namespace TuringMachine.Core.Extensions
         /// <param name="a">A</param>
         /// <param name="b">B</param>
         /// <returns>True if are equals</returns>
-        public static bool ChunkSequenceEqualWithNullCheck(this IList<byte[]> chunks1, IList<byte[]> chunks2)
+        private static bool ChunkSequenceEqualWithNullCheck(this IList<byte[]> chunks1, IList<byte[]> chunks2)
         {
             if ((chunks1 == null) != (chunks2 == null)) return false;
             if (chunks1 == null) return true;

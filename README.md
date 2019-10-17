@@ -7,8 +7,8 @@
   <a href="https://travis-ci.org/Red4Sec/TuringMachine" target="_blank">
     <img src="https://travis-ci.org/Red4Sec/TuringMachine.svg?branch=master" alt="Current TravisCI build status.">
   </a>
-  <a href="https://codecov.io/gh/Red4Sec/TuringMachine" target="_blank">
-    <img src="https://codecov.io/github/Red4Sec/TuringMachine/branch/master/graph/badge.svg" alt="Current Coverage Status." />
+  <a href='https://coveralls.io/github/Red4Sec/TuringMachine?branch=master' target="_blank">
+	  <img src='https://coveralls.io/repos/github/Red4Sec/TuringMachine/badge.svg?branch=master' alt='Coverage Status' />
   </a>
   <a href="https://github.com/Red4Sec/TuringMachine/blob/master/LICENSE" target="_blank">
     <img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="License.">

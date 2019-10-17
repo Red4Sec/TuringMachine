@@ -94,7 +94,7 @@ namespace TuringMachine.Core.Fuzzers.Mutational
             if (obj == null) return false;
 
             return obj.Type == Type
-                && obj.Allowed.ChunkSequenceEqualWithNullCheck(Allowed);
+                && obj.Allowed.SequenceEqualWithNullCheck(Allowed);
         }
 
         /// <summary>
