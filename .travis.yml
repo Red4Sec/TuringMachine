@@ -44,4 +44,9 @@ after_success:
   - echo $TRAVIS_BRANCH
   - echo $TRAVIS_JOB_ID
   - csmacnz.Coveralls --opencover -i coverage.xml --repoTokenVariable COVERALLS_REPO_TOKEN --useRelativePaths
+  - csmacnz.Coveralls --opencover -i coverage.xml --repoTokenVariable COVERALLS_REPO_TOKEN
+  - csmacnz.Coveralls --opencover -i coverage.xml --repoTokenVariable COVERALLS_REPO_TOKEN --basePath ../.././
+  - csmacnz.Coveralls --opencover -i coverage.xml --repoTokenVariable COVERALLS_REPO_TOKEN --basePath ../../
+  - csmacnz.Coveralls --opencover -i coverage.xml --repoTokenVariable COVERALLS_REPO_TOKEN --basePath ../
+  
 
