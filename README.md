@@ -8,14 +8,14 @@
     <img src="https://travis-ci.org/Red4Sec/TuringMachine.svg?branch=master" alt="Current TravisCI build status.">
   </a>
   <a href='https://coveralls.io/github/Red4Sec/TuringMachine?branch=master' target="_blank">
-	  <img src='https://coveralls.io/repos/github/Red4Sec/TuringMachine/badge.svg?branch=master' alt='Coverage Status' />
+    <img src='https://coveralls.io/repos/github/Red4Sec/TuringMachine/badge.svg?branch=master' alt='Coverage Status.' />
   </a>
   <a href="https://github.com/Red4Sec/TuringMachine/blob/master/LICENSE" target="_blank">
     <img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="License.">
   </a>
 <br>
   <a href="https://github.com/Red4Sec/TuringMachine/releases" target="_blank">
-    <img src="https://badge.fury.io/gh/Red4Sec%2FTuringMachine.svg" alt="Current version.">
+    <img src="https://badge.fury.io/gh/red4sec%2FTuringMachine.svg" alt="Current version.">
   </a>
   <a href="https://www.nuget.org/packages/TuringMachine.Core" target="_blank">
     <img src="https://badge.fury.io/nu/TuringMachine.Core.svg" alt="Current nuget version.">
