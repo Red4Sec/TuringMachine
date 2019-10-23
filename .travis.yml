@@ -2,18 +2,15 @@ language: csharp
 
 os:
  - linux
- - osx
 
 dist: bionic
-osx_image: xcode9.1
 mono: none
 dotnet: 3.0.100
 sudo: required
 
 before_install:
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then ulimit -n 2048; fi
-install:
   - sudo apt-get install -qq dotnet-sdk-2.2=2.2.402* # csmacnz.Coveralls is not compatible with dotnet-3x
+install:
   - dotnet tool install -g dotnet-format --version 4.0.40103 --add-source https://dotnet.myget.org/F/format/api/v3/index.json
   - dotnet tool install -g coveralls.net --version 1.0.0
   - export PATH="$PATH:$HOME/.dotnet/tools"
