@@ -53,7 +53,7 @@ TuringMachine also allows to integrate code coverage in .Net applications using 
 
 If you want to use TuringMachine for .Net software, the only requirement is:
 
-- Dotnet core 2.2
+- Dotnet core 3.0
 
 If you want to use it with native programs, please follow the steps described in:
 
@@ -93,21 +93,21 @@ dotnet build samples/Coverage.Payload/
 [Coverage.Payload](samples/Coverage.Payload)
 
 ```
-dotnet .\src\TuringMachine\bin\Debug\netcoreapp2.2\TuringMachine.dll instrument --help
-dotnet .\src\TuringMachine\bin\Debug\netcoreapp2.2\TuringMachine.dll instrument --path .\samples\Coverage.Payload\bin\Debug\netcoreapp2.2\
+dotnet .\src\TuringMachine\bin\Debug\netcoreapp3.0\TuringMachine.dll instrument --help
+dotnet .\src\TuringMachine\bin\Debug\netcoreapp3.0\TuringMachine.dll instrument --path .\samples\Coverage.Payload\bin\Debug\netcoreapp3.0\
 ```
 
 #### Start Server
 
 ```
-dotnet .\src\TuringMachine\bin\Debug\netcoreapp2.2\TuringMachine.dll listen --help
-dotnet .\src\TuringMachine\bin\Debug\netcoreapp2.2\TuringMachine.dll listen --inputs .\samples\random.input
+dotnet .\src\TuringMachine\bin\Debug\netcoreapp3.0\TuringMachine.dll listen --help
+dotnet .\src\TuringMachine\bin\Debug\netcoreapp3.0\TuringMachine.dll listen --inputs .\samples\random.input
 ```
 
 #### Run Client
 
 ```
-dotnet .\samples\Coverage.Payload\bin\Debug\netcoreapp2.2\Coverage.Payload.dll
+dotnet .\samples\Coverage.Payload\bin\Debug\netcoreapp3.0\Coverage.Payload.dll
 ```
 
 #### Show the coverage
