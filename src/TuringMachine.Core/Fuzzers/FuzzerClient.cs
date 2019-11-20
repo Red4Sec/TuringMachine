@@ -318,10 +318,16 @@ namespace TuringMachine.Core.Fuzzers
             }
             catch (Exception e)
             {
+                var errorMsg = e.ToString();
+                if (!string.IsNullOrEmpty(stream.ExtraLogInformation))
+                {
+                    errorMsg += "\nExtraInformation: " + stream.ExtraLogInformation;
+                }
+
                 byte[] zip = new byte[0];
                 var result = FuzzerError.EExplotationResult.Unknown;
                 var error = FuzzerError.EFuzzingErrorType.Fail;
-                var errorId = new Guid(HashHelper.Md5(Encoding.UTF8.GetBytes(e.ToString())));
+                var errorId = new Guid(HashHelper.Md5(Encoding.UTF8.GetBytes(errorMsg)));
 
                 if (e is AggregateException agg)
                 {
@@ -341,7 +347,7 @@ namespace TuringMachine.Core.Fuzzers
                     Error = error,
                     ErrorId = errorId,
                     ExplotationResult = result,
-                    ReplicationData = stream.GenerateZip(zip, e.ToString())
+                    ReplicationData = stream.GenerateZip(zip, errorMsg)
                 };
             }
 

@@ -54,6 +54,11 @@ namespace TuringMachine.Core
         public Guid ConfigId { get; set; }
 
         /// <summary>
+        /// Extra Log information
+        /// </summary>
+        public string ExtraLogInformation { get; set; }
+
+        /// <summary>
         /// Constructor
         /// </summary>
         /// <param name="config">Mutations</param>

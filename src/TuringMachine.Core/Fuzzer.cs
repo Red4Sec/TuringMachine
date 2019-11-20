@@ -200,7 +200,10 @@ namespace TuringMachine.Core
                                 storeCurrentStream = new FileStream(currentStreamPath, FileMode.Create, FileAccess.ReadWrite, FileShare.Read);
                             }
 
-                            using (var stream = new FuzzingStream(config, input, storeCurrentStream))
+                            using (var stream = new FuzzingStream(config, input, storeCurrentStream)
+                            {
+                                ExtraLogInformation = "TaskId: " + args.TaskId
+                            })
                             {
                                 var log = Client.Execute(action, stream);
 
