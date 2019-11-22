@@ -35,11 +35,11 @@
 
     <!--For nuget references-->
 
-    <PackageReference Include="Microsoft.Extensions.FileSystemGlobbing" Version="3.0.0" />
+    <PackageReference Include="Microsoft.Extensions.FileSystemGlobbing" Version="3.0.1" />
     <PackageReference Include="Mono.Cecil" Version="0.11.1" />
     <PackageReference Include="System.Reflection.Metadata" Version="1.7.0" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="3.0.0" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="3.0.0" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="3.0.1" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="3.0.1" />
 
     <!--Real references-->
 
