@@ -8,7 +8,7 @@ namespace TuringMachine.Core.Helpers
         /// Get bytes of input
         /// </summary>
         /// <param name="value">Input</param>
-        public static byte[] GetBytes(int value)
+        public static byte[] GetBytes(this int value)
         {
             var buffer = BitConverter.GetBytes(value);
 #if ALLOW_BIGENDIAN
@@ -24,7 +24,7 @@ namespace TuringMachine.Core.Helpers
         /// Get bytes of input
         /// </summary>
         /// <param name="value">Input</param>
-        public static byte[] GetBytes(ushort value)
+        public static byte[] GetBytes(this ushort value)
         {
             var buffer = BitConverter.GetBytes(value);
 #if ALLOW_BIGENDIAN
@@ -41,7 +41,7 @@ namespace TuringMachine.Core.Helpers
         /// </summary>
         /// <param name="value">Buffer</param>
         /// <param name="index">Index</param>
-        public static ushort ToUInt16(byte[] value, int index)
+        public static ushort ToUInt16(this byte[] value, int index)
         {
 #if ALLOW_BIGENDIAN
             if (!BitConverter.IsLittleEndian)
@@ -57,7 +57,7 @@ namespace TuringMachine.Core.Helpers
         /// </summary>
         /// <param name="value">Buffer</param>
         /// <param name="index">Index</param>
-        public static int ToInt32(byte[] value, int index)
+        public static int ToInt32(this byte[] value, int index)
         {
 #if ALLOW_BIGENDIAN
             if (!BitConverter.IsLittleEndian)

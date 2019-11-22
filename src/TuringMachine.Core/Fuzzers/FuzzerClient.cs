@@ -303,10 +303,18 @@ namespace TuringMachine.Core.Fuzzers
                 var task = new Task(() => action(stream));
                 task.Start();
 
+            WAIT:
+
                 if (!task.Wait(ExecutionTimeOut))
                 {
+                    if (task.Status == TaskStatus.WaitingForActivation ||
+                        task.Status == TaskStatus.WaitingToRun)
+                    {
+                        goto WAIT;
+                    }
+
                     try { task.Dispose(); } catch { }
-                    throw new TimeoutException();
+                    throw new TimeoutException(task.Status.ToString());
                 }
                 else
                 {

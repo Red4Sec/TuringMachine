@@ -1,5 +1,4 @@
-﻿using System;
-using System.Security.Cryptography;
+﻿using System.Security.Cryptography;
 
 namespace TuringMachine.Core.Helpers
 {
@@ -10,7 +9,7 @@ namespace TuringMachine.Core.Helpers
         /// </summary>
         /// <param name="data">Input</param>
         /// <returns>SHA256</returns>
-        public static byte[] Sha256(byte[] data)
+        public static byte[] Sha256(this byte[] data)
         {
             using (var hasher = SHA256.Create())
             {
@@ -23,7 +22,7 @@ namespace TuringMachine.Core.Helpers
         /// </summary>
         /// <param name="data">Input</param>
         /// <returns>MD5</returns>
-        public static byte[] Md5(byte[] data)
+        public static byte[] Md5(this byte[] data)
         {
             using (var hasher = MD5.Create())
             {

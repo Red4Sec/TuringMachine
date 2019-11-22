@@ -34,7 +34,7 @@ namespace TuringMachine.Core.Helpers
         /// </summary>
         /// <param name="data">Datos</param>
         /// <param name="indented">Indented</param>
-        public static string SerializeToJson(object data, bool indented = false)
+        public static string SerializeToJson(this object data, bool indented = false)
         {
             if (data == null)
             {
@@ -49,7 +49,7 @@ namespace TuringMachine.Core.Helpers
         /// </summary>
         /// <typeparam name="T">Tipo</typeparam>
         /// <param name="json">Json</param>
-        public static T DeserializeFromJson<T>(string json)
+        public static T DeserializeFromJson<T>(this string json)
         {
             if (json == null)
             {
@@ -64,7 +64,7 @@ namespace TuringMachine.Core.Helpers
         /// </summary>
         /// <typeparam name="T">Tipo</typeparam>
         /// <param name="json">Json</param>
-        public static object DeserializeFromJson(string json, Type type)
+        public static object DeserializeFromJson(this string json, Type type)
         {
             if (json == null || type == null)
             {
@@ -80,7 +80,7 @@ namespace TuringMachine.Core.Helpers
         /// <typeparam name="T">Type</typeparam>
         /// <param name="file">File</param>
         /// <returns>T</returns>
-        public static IEnumerable<T> DeserializeFromFile<T>(string file)
+        public static IEnumerable<T> DeserializeFromFile<T>(this string file)
         {
             var content = File.ReadAllText(file);
 
