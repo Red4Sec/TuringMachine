@@ -22,12 +22,6 @@ namespace TuringMachine
 
         static void Main(string[] args)
         {
-            //args = new string[]
-            //{
-            //    "instrument",
-            //    "--path", @"c:\sources\theturingmachine\samples\neo\NeoJson.Payload\bin\debug\netcoreapp2.2\"
-            //};
-
             Parser.Default.ParseArguments<CmdOptions, CmdInstrumentOptions>(args)
                 .WithParsed<CmdInstrumentOptions>(o => Instrument(o))
                 .WithParsed<CmdOptions>(o => Run(o))
