@@ -315,7 +315,8 @@ namespace TuringMachine.Core.Fuzzers
                 var thread = new Thread(new ParameterizedThreadStart(AsyncTask))
                 {
                     Priority = ThreadPriority.Normal,
-                    Name = "Fuzzing Thread"
+                    Name = "Fuzzing Thread",
+                    IsBackground = true
                 };
 
                 thread.Start(task);
