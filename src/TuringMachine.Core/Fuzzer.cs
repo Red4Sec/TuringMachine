@@ -118,11 +118,11 @@ namespace TuringMachine.Core
             // Fuzz
 
             var cancel = new CancelEventArgs();
-            ConsoleCancelEventHandler handler = (o, s) =>
+            var handler = new ConsoleCancelEventHandler((o, s) =>
             {
                 cancel.Cancel = true;
                 s.Cancel = true;
-            };
+            });
             Console.CancelKeyPress += handler;
 
             // Ensure data
