@@ -342,9 +342,9 @@ namespace TuringMachine.Core.Fuzzers
                     errorMsg += "\nExtraInformation: " + stream.ExtraLogInformation;
                 }
 
-                byte[] zip = new byte[0];
-                var result = FuzzerError.EExplotationResult.Unknown;
+                var zip = new byte[0];
                 var error = FuzzerError.EFuzzingErrorType.Fail;
+                var result = FuzzerError.EExplotationResult.Unknown;
                 var errorId = new Guid(HashHelper.Md5(Encoding.UTF8.GetBytes(errorMsg)));
 
                 if (e is AggregateException agg)
