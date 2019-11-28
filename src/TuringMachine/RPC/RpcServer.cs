@@ -83,6 +83,12 @@ namespace TuringMachine.RPC
 			}))
 		   .Configure(app =>
 		   {
+			   app.UseSwagger();
+			   app.UseSwaggerUI(c =>
+			   {
+				   c.SwaggerEndpoint("/swagger/v1/swagger.json", "TuringMachine API V1");
+			   });
+
 			   app.UseResponseCompression();
 			   app.UseRouting();
 			   app.UseEndpoints(endpoints => endpoints.MapControllers());
@@ -94,8 +100,14 @@ namespace TuringMachine.RPC
 			   services.AddSingleton<ConnectionsController, ConnectionsController>();
 			   services.AddSingleton<InputsController, InputsController>();
 
+			   services.AddSwaggerGen(c =>
+			   {
+				   c.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo() { Title = "TuringMachine API", Version = "v1" });
+			   });
+
 			   services
 				   .AddMvcCore()
+				   .AddApiExplorer()
 				   .AddControllersAsServices()
 				   .AddNewtonsoftJson(c =>
 				   {

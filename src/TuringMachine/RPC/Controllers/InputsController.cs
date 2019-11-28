@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -31,7 +31,7 @@ namespace TuringMachine.RPC.Controllers
 			return true;
 		}
 
-		[HttpGet("remove")]
+		[HttpDelete("remove")]
 		public ActionResult<bool> Remove(Guid id)
 		{
 			if (_server.Server.Inputs.Remove(id))
