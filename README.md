@@ -125,7 +125,7 @@ Start-Process http://127.0.0.1:1234/swagger/index.html
 ```
 
 <p align="center">
-  <img src="https://github.com/Red4Sec/TuringMachine/blob/master/info/rpc.png?raw=true" width="500px">
+  <img src="https://github.com/Red4Sec/TuringMachine/blob/master/info/swagger.png?raw=true" width="500px">
 </p>
 
 ## Debug
