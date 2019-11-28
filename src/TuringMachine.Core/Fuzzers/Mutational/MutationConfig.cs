@@ -7,105 +7,105 @@ using TuringMachine.Core.Interfaces;
 
 namespace TuringMachine.Core.Fuzzers.Mutational
 {
-    public class MutationConfig : FuzzingConfigBase, IEquatable<MutationConfig>
-    {
-        /// <summary>
-        /// Mutations
-        /// </summary>
-        [Category("1 - Collection")]
-        public List<MutationalEntry> Mutations { get; set; }
+	public class MutationConfig : FuzzingConfigBase, IEquatable<MutationConfig>
+	{
+		/// <summary>
+		/// Mutations
+		/// </summary>
+		[Category("1 - Collection")]
+		public List<MutationalEntry> Mutations { get; set; }
 
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        public MutationConfig() : base("Mutational")
-        {
-            Mutations = new List<MutationalEntry>();
-            Description = "Unnamed";
-        }
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public MutationConfig() : base("Mutational")
+		{
+			Mutations = new List<MutationalEntry>();
+			Description = "Unnamed";
+		}
 
-        /// <summary>
-        /// Init for
-        /// </summary>
-        /// <param name="stream">Stream</param>
-        public override void InitFor(FuzzingStream stream)
-        {
-            if (Mutations == null) return;
+		/// <summary>
+		/// Init for
+		/// </summary>
+		/// <param name="stream">Stream</param>
+		public override void InitFor(FuzzingStream stream)
+		{
+			if (Mutations == null) return;
 
-            int x = 0;
-            foreach (var cond in Mutations)
-            {
-                cond.InitFor(stream, x);
-                x++;
-            }
-        }
+			int x = 0;
+			foreach (var cond in Mutations)
+			{
+				cond.InitFor(stream, x);
+				x++;
+			}
+		}
 
-        /// <summary>
-        /// Get next mutation
-        /// </summary>
-        /// <param name="stream">Stream</param>
-        public override PatchChange Get(FuzzingStream stream)
-        {
-            if (Mutations == null) return null;
+		/// <summary>
+		/// Get next mutation
+		/// </summary>
+		/// <param name="stream">Stream</param>
+		public override PatchChange Get(FuzzingStream stream)
+		{
+			if (Mutations == null) return null;
 
-            var offset = stream.Position;
+			var offset = stream.Position;
 
-            // Fuzzer
+			// Fuzzer
 
-            int x = 0;
-            foreach (var cond in Mutations)
-            {
-                var change = cond.Get(stream, offset, x);
+			int x = 0;
+			foreach (var cond in Mutations)
+			{
+				var change = cond.Get(stream, offset, x);
 
-                if (change != null)
-                {
-                    return change.Process(offset);
-                }
+				if (change != null)
+				{
+					return change.Process(offset);
+				}
 
-                x++;
-            }
+				x++;
+			}
 
-            return null;
-        }
+			return null;
+		}
 
-        public override bool Equals(object obj)
-        {
-            if (!(obj is MutationConfig o))
-            {
-                return false;
-            }
+		public override bool Equals(object obj)
+		{
+			if (!(obj is MutationConfig o))
+			{
+				return false;
+			}
 
-            return Equals(o);
-        }
+			return Equals(o);
+		}
 
-        public override bool Equals(FuzzingConfigBase obj)
-        {
-            if (!(obj is MutationConfig o))
-            {
-                return false;
-            }
+		public override bool Equals(FuzzingConfigBase obj)
+		{
+			if (!(obj is MutationConfig o))
+			{
+				return false;
+			}
 
-            return Equals(o);
-        }
+			return Equals(o);
+		}
 
-        public bool Equals(MutationConfig obj)
-        {
-            if (obj == null) return false;
+		public bool Equals(MutationConfig obj)
+		{
+			if (obj == null) return false;
 
-            return base.Equals(obj)
-                && obj.Mutations.SequenceEqualWithNullCheck(obj.Mutations);
-        }
+			return base.Equals(obj)
+				&& obj.Mutations.SequenceEqualWithNullCheck(obj.Mutations);
+		}
 
-        /// <summary>
-        /// GetHashCode
-        /// </summary>
-        /// <returns>Hash code</returns>
-        public override int GetHashCode()
-        {
-            var hashCode = -106078415;
-            hashCode = hashCode * -1521134295 + base.GetHashCode();
-            hashCode = hashCode * -1521134295 + Mutations.GetHashCodeWithNullCheck();
-            return hashCode;
-        }
-    }
+		/// <summary>
+		/// GetHashCode
+		/// </summary>
+		/// <returns>Hash code</returns>
+		public override int GetHashCode()
+		{
+			var hashCode = -106078415;
+			hashCode = hashCode * -1521134295 + base.GetHashCode();
+			hashCode = hashCode * -1521134295 + Mutations.GetHashCodeWithNullCheck();
+			return hashCode;
+		}
+	}
 }

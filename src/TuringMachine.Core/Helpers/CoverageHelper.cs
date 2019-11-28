@@ -22,356 +22,356 @@ using System.Threading.Tasks;
 
 namespace TuringMachine.Core.Helpers
 {
-    /// <summary>
-    /// Coverage helper
-    /// </summary>
-    public static class CoverageHelper
-    {
-        class CoverletLogger : Coverlet.Core.Logging.ILogger
-        {
-            public void LogError(string message) => Console.WriteLine(message);
-            public void LogError(Exception exception) => Console.WriteLine(exception.ToString());
-            public void LogInformation(string message, bool important = false) => Console.WriteLine(message);
-            public void LogVerbose(string message) => Console.WriteLine(message);
-            public void LogWarning(string message) => Console.WriteLine(message);
-        }
+	/// <summary>
+	/// Coverage helper
+	/// </summary>
+	public static class CoverageHelper
+	{
+		class CoverletLogger : Coverlet.Core.Logging.ILogger
+		{
+			public void LogError(string message) => Console.WriteLine(message);
+			public void LogError(Exception exception) => Console.WriteLine(exception.ToString());
+			public void LogInformation(string message, bool important = false) => Console.WriteLine(message);
+			public void LogVerbose(string message) => Console.WriteLine(message);
+			public void LogWarning(string message) => Console.WriteLine(message);
+		}
 
-        private static double _currentCoverage = 0;
+		private static double _currentCoverage = 0;
 
-        /// <summary>
-        /// Current Coverage
-        /// </summary>
-        public static double CurrentCoverage
-        {
-            get => _currentCoverage;
-            set
-            {
-                if (value < 0) value = 0;
-                else if (value > 100) value = 100;
+		/// <summary>
+		/// Current Coverage
+		/// </summary>
+		public static double CurrentCoverage
+		{
+			get => _currentCoverage;
+			set
+			{
+				if (value < 0) value = 0;
+				else if (value > 100) value = 100;
 
-                _currentCoverage = value;
-            }
-        }
+				_currentCoverage = value;
+			}
+		}
 
-        /// <summary>
-        /// Is instrumented
-        /// </summary>
-        public static bool IsInstrumented => _hitsArray.Length > 0;
+		/// <summary>
+		/// Is instrumented
+		/// </summary>
+		public static bool IsInstrumented => _hitsArray.Length > 0;
 
-        /// <summary>
-        /// Hits array length
-        /// </summary>
-        private static readonly int _hitsArrayLength;
+		/// <summary>
+		/// Hits array length
+		/// </summary>
+		private static readonly int _hitsArrayLength;
 
-        /// <summary>
-        /// Hits arrays
-        /// </summary>
-        private static readonly int[][] _hitsArray;
+		/// <summary>
+		/// Hits arrays
+		/// </summary>
+		private static readonly int[][] _hitsArray;
 
-        /// <summary>
-        /// Unload modules
-        /// </summary>
-        private static readonly MethodInfo[] _unloadModule;
+		/// <summary>
+		/// Unload modules
+		/// </summary>
+		private static readonly MethodInfo[] _unloadModule;
 
-        /// <summary>
-        /// Logger
-        /// </summary>
-        private static readonly CoverletLogger _logger = new CoverletLogger();
+		/// <summary>
+		/// Logger
+		/// </summary>
+		private static readonly CoverletLogger _logger = new CoverletLogger();
 
-        /// <summary>
-        /// Coverage task
-        /// </summary>
-        private static Task _coverageTask;
+		/// <summary>
+		/// Coverage task
+		/// </summary>
+		private static Task _coverageTask;
 
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        static CoverageHelper()
-        {
-            // Find instrumentation payload
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		static CoverageHelper()
+		{
+			// Find instrumentation payload
 
-            var hitsArrays = new List<int[]>();
-            var unloadModule = new List<MethodInfo>();
-            var regex = new Regex(@"Coverlet\.Core\.Instrumentation\.Tracker\..*\.Payload_\.*");
+			var hitsArrays = new List<int[]>();
+			var unloadModule = new List<MethodInfo>();
+			var regex = new Regex(@"Coverlet\.Core\.Instrumentation\.Tracker\..*\.Payload_\.*");
 
-            foreach (var asm in AppDomain.CurrentDomain.GetAssemblies())
-            {
-                foreach (var type in asm.GetTypes())
-                {
-                    if (regex.IsMatch(type.FullName))
-                    {
-                        var field = type.GetField("HitsArray", BindingFlags.Public | BindingFlags.Static);
-                        if (field != null)
-                        {
-                            hitsArrays.Add((int[])field.GetValue(null));
-                        }
+			foreach (var asm in AppDomain.CurrentDomain.GetAssemblies())
+			{
+				foreach (var type in asm.GetTypes())
+				{
+					if (regex.IsMatch(type.FullName))
+					{
+						var field = type.GetField("HitsArray", BindingFlags.Public | BindingFlags.Static);
+						if (field != null)
+						{
+							hitsArrays.Add((int[])field.GetValue(null));
+						}
 
-                        var method = type.GetMethod("UnloadModule", BindingFlags.Public | BindingFlags.Static);
-                        if (method != null)
-                        {
-                            unloadModule.Add(method);
-                        }
-                    }
-                }
-            }
+						var method = type.GetMethod("UnloadModule", BindingFlags.Public | BindingFlags.Static);
+						if (method != null)
+						{
+							unloadModule.Add(method);
+						}
+					}
+				}
+			}
 
-            _hitsArray = hitsArrays.ToArray();
-            _unloadModule = unloadModule.ToArray();
+			_hitsArray = hitsArrays.ToArray();
+			_unloadModule = unloadModule.ToArray();
 
-            // Compute length
+			// Compute length
 
-            _hitsArrayLength = 0;
+			_hitsArrayLength = 0;
 
-            foreach (var hits in _hitsArray)
-            {
-                _hitsArrayLength += hits.Length;
-            }
-        }
+			foreach (var hits in _hitsArray)
+			{
+				_hitsArrayLength += hits.Length;
+			}
+		}
 
-        /// <summary>
-        /// Create coverage Listener if need
-        /// </summary>
-        public static void CreateCoverageListener()
-        {
-            if (_coverageTask != null)
-            {
-                return;
-            }
+		/// <summary>
+		/// Create coverage Listener if need
+		/// </summary>
+		public static void CreateCoverageListener()
+		{
+			if (_coverageTask != null)
+			{
+				return;
+			}
 
-            // Start coverage listener
+			// Start coverage listener
 
-            _coverageTask = InternalCreateCoverageListener();
+			_coverageTask = InternalCreateCoverageListener();
 
-            if (_coverageTask != Task.CompletedTask)
-            {
-                _coverageTask.Start();
-            }
-            else if (!IsInstrumented)
-            {
-                Console.Error.WriteLine("The module is not instrumented!");
-            }
-        }
+			if (_coverageTask != Task.CompletedTask)
+			{
+				_coverageTask.Start();
+			}
+			else if (!IsInstrumented)
+			{
+				Console.Error.WriteLine("The module is not instrumented!");
+			}
+		}
 
-        /// <summary>
-        /// Create a refresh task for coverage
-        /// </summary>
-        /// <returns>Task</returns>
-        private static Task InternalCreateCoverageListener()
-        {
-            if (!IsInstrumented)
-            {
-                return Task.CompletedTask;
-            }
+		/// <summary>
+		/// Create a refresh task for coverage
+		/// </summary>
+		/// <returns>Task</returns>
+		private static Task InternalCreateCoverageListener()
+		{
+			if (!IsInstrumented)
+			{
+				return Task.CompletedTask;
+			}
 
-            // Task
+			// Task
 
-            AppDomain.CurrentDomain.ProcessExit += (o, s) =>
-            {
-                // Report after exit
+			AppDomain.CurrentDomain.ProcessExit += (o, s) =>
+			{
+				// Report after exit
 
-                DoReport();
-            };
+				DoReport();
+			};
 
-            return new Task(() =>
-            {
-                var coverage = 0D;
+			return new Task(() =>
+			{
+				var coverage = 0D;
 
-                while (_hitsArrayLength > 0)
-                {
-                    var cur = 0;
+				while (_hitsArrayLength > 0)
+				{
+					var cur = 0;
 
-                    foreach (var hits in _hitsArray)
-                    {
-                        var array = hits;
-                        cur += array.Count(u => u != 0);
-                    }
+					foreach (var hits in _hitsArray)
+					{
+						var array = hits;
+						cur += array.Count(u => u != 0);
+					}
 
-                    if (_hitsArrayLength <= cur)
-                    {
-                        coverage = 100D;
-                    }
-                    else
-                    {
-                        coverage = cur * 100.0D / _hitsArrayLength;
-                    }
+					if (_hitsArrayLength <= cur)
+					{
+						coverage = 100D;
+					}
+					else
+					{
+						coverage = cur * 100.0D / _hitsArrayLength;
+					}
 
-                    CurrentCoverage = coverage;
-                    Thread.Sleep(500);
-                }
-            });
-        }
+					CurrentCoverage = coverage;
+					Thread.Sleep(500);
+				}
+			});
+		}
 
-        /// <summary>
-        /// Do report
-        /// </summary>
-        /// <param name="path">Path (default "InstrumentationResult.xml")</param>
-        /// <param name="output">Output (default "opencover.xml")</param>
-        /// <param name="format">Format (default "opencover")</param>
-        /// <returns>Return true if it works</returns>
-        public static bool DoReport(string path = "InstrumentationResult.xml", string output = "opencover.xml", string format = "opencover")
-        {
-            if (!IsInstrumented)
-            {
-                _logger.LogError("Is not instrumented");
-                return false;
-            }
+		/// <summary>
+		/// Do report
+		/// </summary>
+		/// <param name="path">Path (default "InstrumentationResult.xml")</param>
+		/// <param name="output">Output (default "opencover.xml")</param>
+		/// <param name="format">Format (default "opencover")</param>
+		/// <returns>Return true if it works</returns>
+		public static bool DoReport(string path = "InstrumentationResult.xml", string output = "opencover.xml", string format = "opencover")
+		{
+			if (!IsInstrumented)
+			{
+				_logger.LogError("Is not instrumented");
+				return false;
+			}
 
-            if (!File.Exists(path))
-            {
-                _logger.LogError("Result of instrumentation task not found");
-                return false;
-            }
+			if (!File.Exists(path))
+			{
+				_logger.LogError("Result of instrumentation task not found");
+				return false;
+			}
 
-            // Update hits
+			// Update hits
 
-            if (_unloadModule != null)
-            {
-                foreach (var method in _unloadModule)
-                {
-                    method.Invoke(null, new object[] { null, null });
-                }
-            }
+			if (_unloadModule != null)
+			{
+				foreach (var method in _unloadModule)
+				{
+					method.Invoke(null, new object[] { null, null });
+				}
+			}
 
-            // Parse instrumentation result
+			// Parse instrumentation result
 
-            Coverage coverage = null;
-            using (var instrumenterStateStream = File.OpenRead(path))
-            {
-                coverage = new Coverage(CoveragePrepareResult.Deserialize(instrumenterStateStream),
-                    _logger, (IInstrumentationHelper)DependencyInjection.Current.GetService(typeof(IInstrumentationHelper)),
-                    (IFileSystem)DependencyInjection.Current.GetService(typeof(IFileSystem)));
-            }
+			Coverage coverage = null;
+			using (var instrumenterStateStream = File.OpenRead(path))
+			{
+				coverage = new Coverage(CoveragePrepareResult.Deserialize(instrumenterStateStream),
+					_logger, (IInstrumentationHelper)DependencyInjection.Current.GetService(typeof(IInstrumentationHelper)),
+					(IFileSystem)DependencyInjection.Current.GetService(typeof(IFileSystem)));
+			}
 
-            // Get coverage
+			// Get coverage
 
-            // TODO: Require https://github.com/tonerdo/coverlet/pull/577
+			// TODO: Require https://github.com/tonerdo/coverlet/pull/577
 
-            var result = coverage.GetCoverageResult(false);
-            var reporter = new ReporterFactory(format).CreateReporter();
+			var result = coverage.GetCoverageResult(false);
+			var reporter = new ReporterFactory(format).CreateReporter();
 
-            if (reporter == null)
-            {
-                throw new Exception($"Specified output format '{format}' is not supported");
-            }
+			if (reporter == null)
+			{
+				throw new Exception($"Specified output format '{format}' is not supported");
+			}
 
-            // Create opencover file
+			// Create opencover file
 
-            File.WriteAllText(output, reporter.Report(result));
+			File.WriteAllText(output, reporter.Report(result));
 
-            try
-            {
-                // Reporting
+			try
+			{
+				// Reporting
 
-                var file = new FileInfo(output);
-                Program.Main(new string[] { $"-reports:{file.FullName}", $"-targetdir:{Path.GetDirectoryName(file.FullName)}\\coverageReport" });
-            }
-            catch { }
-            return true;
-        }
+				var file = new FileInfo(output);
+				Program.Main(new string[] { $"-reports:{file.FullName}", $"-targetdir:{Path.GetDirectoryName(file.FullName)}\\coverageReport" });
+			}
+			catch { }
+			return true;
+		}
 
-        /// <summary>
-        /// Instrument
-        ///     Require patch in ProcessExitHandler for prevent restore files
-        /// </summary>
-        public static bool Instrument
-            (
-            string output, string path,
-            string include, string includeDirectory,
-            string exclude, string excludeByFile, string excludeByAttribute,
-            bool includeTestAssembly,
-            bool singleHit,
-            string mergeWith,
-            bool useSourceLink
-            )
-        {
-            // Add default values
+		/// <summary>
+		/// Instrument
+		///     Require patch in ProcessExitHandler for prevent restore files
+		/// </summary>
+		public static bool Instrument
+			(
+			string output, string path,
+			string include, string includeDirectory,
+			string exclude, string excludeByFile, string excludeByAttribute,
+			bool includeTestAssembly,
+			bool singleHit,
+			string mergeWith,
+			bool useSourceLink
+			)
+		{
+			// Add default values
 
-            if (string.IsNullOrEmpty(exclude))
-            {
-                exclude = "[coverlet.core]*,[TuringMachine.*]*";
-            }
-            else
-            {
-                exclude += ",[coverlet.core]*,[TuringMachine.*]*";
-            }
+			if (string.IsNullOrEmpty(exclude))
+			{
+				exclude = "[coverlet.core]*,[TuringMachine.*]*";
+			}
+			else
+			{
+				exclude += ",[coverlet.core]*,[TuringMachine.*]*";
+			}
 
-            var includeFilters = include?.Split(',');
-            var includeDirectories = includeDirectory?.Split(',');
-            var excludeFilters = exclude?.Split(',');
-            var excludedSourceFiles = excludeByFile?.Split(',');
-            var excludeAttributes = excludeByAttribute?.Split(',');
-            var fileSystem = (IFileSystem)DependencyInjection.Current.GetService(typeof(IFileSystem));
+			var includeFilters = include?.Split(',');
+			var includeDirectories = includeDirectory?.Split(',');
+			var excludeFilters = exclude?.Split(',');
+			var excludedSourceFiles = excludeByFile?.Split(',');
+			var excludeAttributes = excludeByAttribute?.Split(',');
+			var fileSystem = (IFileSystem)DependencyInjection.Current.GetService(typeof(IFileSystem));
 
-            try
-            {
-                var coverage = new Coverage(
-                    path,
-                    includeFilters,
-                    includeDirectories,
-                    excludeFilters,
-                    excludedSourceFiles,
-                    excludeAttributes,
-                    includeTestAssembly,
-                    singleHit,
-                    mergeWith,
-                    useSourceLink,
-                    _logger,
-                    (IInstrumentationHelper)DependencyInjection.Current.GetService(typeof(IInstrumentationHelper)),
-                    fileSystem);
+			try
+			{
+				var coverage = new Coverage(
+					path,
+					includeFilters,
+					includeDirectories,
+					excludeFilters,
+					excludedSourceFiles,
+					excludeAttributes,
+					includeTestAssembly,
+					singleHit,
+					mergeWith,
+					useSourceLink,
+					_logger,
+					(IInstrumentationHelper)DependencyInjection.Current.GetService(typeof(IInstrumentationHelper)),
+					fileSystem);
 
-                var prepareResult = coverage.PrepareModules();
+				var prepareResult = coverage.PrepareModules();
 
-                if (File.Exists(output))
-                {
-                    File.Delete(output);
-                }
+				if (File.Exists(output))
+				{
+					File.Delete(output);
+				}
 
-                using (var instrumentedStateFile = File.OpenWrite(output))
-                {
-                    using (var serializedState = CoveragePrepareResult.Serialize(prepareResult))
-                    {
-                        serializedState.CopyTo(instrumentedStateFile);
-                    }
-                }
+				using (var instrumentedStateFile = File.OpenWrite(output))
+				{
+					using (var serializedState = CoveragePrepareResult.Serialize(prepareResult))
+					{
+						serializedState.CopyTo(instrumentedStateFile);
+					}
+				}
 
-                if (Directory.Exists(path))
-                {
-                    try
-                    {
-                        var dest = Path.GetFileName(output);
-                        dest = Path.Combine(path, output);
+				if (Directory.Exists(path))
+				{
+					try
+					{
+						var dest = Path.GetFileName(output);
+						dest = Path.Combine(path, output);
 
-                        if (dest.ToLowerInvariant() == output.ToLowerInvariant())
-                        {
-                            return true;
-                        }
+						if (dest.ToLowerInvariant() == output.ToLowerInvariant())
+						{
+							return true;
+						}
 
-                        if (File.Exists(dest))
-                        {
-                            File.Delete(dest);
-                        }
+						if (File.Exists(dest))
+						{
+							File.Delete(dest);
+						}
 
-                        File.Copy(output, dest);
-                    }
-                    catch { }
-                }
+						File.Copy(output, dest);
+					}
+					catch { }
+				}
 
-                // Prevent revert cleaning the backup list
+				// Prevent revert cleaning the backup list
 
-                var helper = (IInstrumentationHelper)DependencyInjection.Current.GetService(typeof(IInstrumentationHelper));
-                var field = (ConcurrentDictionary<string, string>)helper
-                    .GetType()
-                    .GetField("_backupList", BindingFlags.Instance | BindingFlags.NonPublic)
-                    .GetValue(helper);
+				var helper = (IInstrumentationHelper)DependencyInjection.Current.GetService(typeof(IInstrumentationHelper));
+				var field = (ConcurrentDictionary<string, string>)helper
+					.GetType()
+					.GetField("_backupList", BindingFlags.Instance | BindingFlags.NonPublic)
+					.GetValue(helper);
 
-                field.Clear();
-                return true;
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex);
-                return false;
-            }
-        }
-    }
+				field.Clear();
+				return true;
+			}
+			catch (Exception ex)
+			{
+				_logger.LogError(ex);
+				return false;
+			}
+		}
+	}
 }
