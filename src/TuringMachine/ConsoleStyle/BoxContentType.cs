@@ -1,10 +1,10 @@
 ﻿namespace TuringMachine.ConsoleStyle
 {
-    public enum BoxContentType
-    {
-        First,
-        Middle,
-        Last,
-        Unique
-    }
+	public enum BoxContentType
+	{
+		First,
+		Middle,
+		Last,
+		Unique
+	}
 }
