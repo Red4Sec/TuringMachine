@@ -84,12 +84,8 @@ namespace TuringMachine.RPC
 		   .Configure(app =>
 		   {
 			   app.UseResponseCompression();
-			   app
-				.UseRouting()
-				.UseEndpoints(endpoints =>
-			   {
-				   endpoints.MapControllers();
-			   });
+			   app.UseRouting();
+			   app.UseEndpoints(endpoints => endpoints.MapControllers());
 		   })
 		   .ConfigureServices(services =>
 		   {
