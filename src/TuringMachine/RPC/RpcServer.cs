@@ -3,7 +3,9 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using System;
+using System.Diagnostics;
 using System.IO.Compression;
 using System.Linq;
 using System.Net;
@@ -113,6 +115,25 @@ namespace TuringMachine.RPC
 				   {
 					   SerializationHelper.Configure(c.SerializerSettings);
 				   });
+
+			   services.AddLogging(builder =>
+				{
+					if (Debugger.IsAttached)
+					{
+						builder
+							.ClearProviders()
+							.AddConsole();
+					}
+					else
+					{
+						builder
+							.ClearProviders()
+							.AddFilter("Microsoft", LogLevel.Warning)
+							.AddFilter("System", LogLevel.Warning)
+							.AddFilter("NToastNotify", LogLevel.Warning)
+							.AddEventLog();
+					}
+				});
 
 			   services.AddResponseCompression(options =>
 			   {
