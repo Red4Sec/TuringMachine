@@ -10,7 +10,6 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using TuringMachine.Core.Exceptions;
-using TuringMachine.Core.Extensions;
 using TuringMachine.Core.Helpers;
 using TuringMachine.Core.Interfaces;
 using TuringMachine.Core.Logs;
@@ -19,6 +18,13 @@ namespace TuringMachine.Core.Fuzzers
 {
 	public class FuzzerClient : IDisposable, IRandomValue<FuzzingConfigBase>, IRandomValue<FuzzingInputBase>
 	{
+		class FuzzerTask
+		{
+			public Exception Exception = null;
+			public Action<Stream> Action = null;
+			public FuzzingStream Stream = null;
+		}
+
 		#region Public properties
 
 		/// <summary>
@@ -298,23 +304,27 @@ namespace TuringMachine.Core.Fuzzers
 				InputId = stream.InputId
 			};
 
+			var task = new FuzzerTask()
+			{
+				Action = action,
+				Stream = stream
+			};
+
 			try
 			{
-				var task = new Task(() => action(stream));
-				task.Start();
-
-			WAIT:
-
-				if (!task.Wait(ExecutionTimeOut))
+				var thread = new Thread(new ParameterizedThreadStart(AsyncTask))
 				{
-					if (task.Status == TaskStatus.WaitingForActivation ||
-						task.Status == TaskStatus.WaitingToRun)
-					{
-						goto WAIT;
-					}
+					Priority = ThreadPriority.Normal,
+					Name = "Fuzzing Thread",
+					IsBackground = true
+				};
 
-					try { task.Dispose(); } catch { }
-					throw new TimeoutException(task.Status.ToString());
+				thread.Start(task);
+
+				if (!thread.Join(ExecutionTimeOut))
+				{
+					try { thread.Abort(); } catch { }
+					throw new TimeoutException(thread.ThreadState.ToString());
 				}
 				else
 				{
@@ -364,6 +374,24 @@ namespace TuringMachine.Core.Fuzzers
 			log.Coverage = CoverageHelper.CurrentCoverage;
 
 			return log;
+		}
+
+		/// <summary>
+		/// Task thread
+		/// </summary>
+		/// <param name="obj">Object</param>
+		private void AsyncTask(object obj)
+		{
+			var task = (FuzzerTask)obj;
+
+			try
+			{
+				task.Action(task.Stream);
+			}
+			catch (Exception e)
+			{
+				task.Exception = e;
+			}
 		}
 
 		/// <summary>
