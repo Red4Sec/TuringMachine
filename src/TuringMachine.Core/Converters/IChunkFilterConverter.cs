@@ -19,9 +19,9 @@ namespace TuringMachine.Core.Converters
 		{
 			var jObject = JObject.Load(reader);
 
-			if (jObject.Property("Type") != null)
+			if (jObject.Property("Type", StringComparison.InvariantCultureIgnoreCase) != null)
 			{
-				switch (jObject.GetValue("Type").ToString())
+				switch (jObject.GetValue("Type", StringComparison.InvariantCultureIgnoreCase).ToString())
 				{
 					case "MixCase":
 						{

@@ -24,9 +24,9 @@ namespace TuringMachine.Core.Converters
 			var jObject = JObject.Load(reader);
 			var tar = objectType.GenericTypeArguments[0];
 
-			if (jObject.Property("Type") != null)
+			if (jObject.Property("Type", StringComparison.InvariantCultureIgnoreCase) != null)
 			{
-				switch (jObject.GetValue("Type").ToString())
+				switch (jObject.GetValue("Type", StringComparison.InvariantCultureIgnoreCase).ToString())
 				{
 					case "From-To":
 						{

@@ -1,4 +1,4 @@
-﻿using CommandLine;
+using CommandLine;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,6 +10,7 @@ using TuringMachine.Core.Fuzzers.Patch;
 using TuringMachine.Core.Helpers;
 using TuringMachine.Core.Interfaces;
 using TuringMachine.Core.Logs;
+using TuringMachine.RPC;
 
 namespace TuringMachine
 {
@@ -50,6 +51,14 @@ namespace TuringMachine
 		{
 			using (var server = new FuzzerServer())
 			{
+				RpcServer rpc = null;
+
+				if (!string.IsNullOrEmpty(opts.RpcEndPoint))
+				{
+					rpc = new RpcServer(opts.RpcEndPoint.ToIpEndPoint(), server, opts.RpcHttpsCertificate, opts.RpcHttpsCertificatePassword);
+					rpc.Start();
+				}
+
 				// Parse
 
 				foreach (var file in CmdOptions.GetFiles(opts.Inputs))
@@ -70,7 +79,7 @@ namespace TuringMachine
 
 				// Checks
 
-				if (server.Inputs.Count == 0)
+				if (server.Inputs.Count == 0 && rpc == null)
 				{
 					Console.WriteLine("No inputs found");
 					return;
@@ -116,6 +125,8 @@ namespace TuringMachine
 					PrintStats(server);
 				}
 				while (Console.ReadKey().Key != ConsoleKey.Enter);
+
+				rpc?.Dispose();
 			}
 		}
 

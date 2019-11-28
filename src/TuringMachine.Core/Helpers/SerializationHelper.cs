@@ -15,18 +15,28 @@ namespace TuringMachine.Core.Helpers
 
 		private readonly static JsonSerializerSettings _Settings;
 
+		/// <summary>
+		/// Static constructor
+		/// </summary>
 		static SerializationHelper()
 		{
-			_Settings = new JsonSerializerSettings()
-			{
-				NullValueHandling = NullValueHandling.Ignore,
-			};
-			_Settings.Converters.Add(new IPEndPointConverter());
-			_Settings.Converters.Add(new FuzzingConfigBaseConverter());
-			_Settings.Converters.Add(new FuzzingInputBaseConverter());
-			_Settings.Converters.Add(new IGetValueConverter());
-			_Settings.Converters.Add(new IChunkFilterConverter());
-			_Settings.Converters.Add(new IMutationConverter());
+			_Settings = new JsonSerializerSettings();
+			Configure(_Settings);
+		}
+
+		/// <summary>
+		/// Configure Json settings
+		/// </summary>
+		/// <param name="settings">Settings</param>
+		public static void Configure(JsonSerializerSettings settings)
+		{
+			settings.NullValueHandling = NullValueHandling.Ignore;
+			settings.Converters.Add(new IPEndPointConverter());
+			settings.Converters.Add(new FuzzingConfigBaseConverter());
+			settings.Converters.Add(new FuzzingInputBaseConverter());
+			settings.Converters.Add(new IGetValueConverter());
+			settings.Converters.Add(new IChunkFilterConverter());
+			settings.Converters.Add(new IMutationConverter());
 		}
 
 		/// <summary>
