@@ -43,9 +43,9 @@ namespace TuringMachine.RPC.Controllers
 		}
 
 		[HttpGet("stats")]
-		public ActionResult<IEnumerable<FuzzerStat<FuzzerClientInfo>>> GetStats()
+		public ActionResult<IEnumerable<FuzzerStat<FuzzerClientInfo>>> GetStats(int index = -1, int count = -1)
 		{
-			return _server.Server.Connections.Values.ToArray();
+			return _server.Server.Connections.Values.ToArray(index, count);
 		}
 	}
 }
