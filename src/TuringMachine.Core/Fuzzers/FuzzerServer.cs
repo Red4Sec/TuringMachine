@@ -18,8 +18,8 @@ namespace TuringMachine.Core.Fuzzers
     {
         #region Public properties
 
-        public readonly IDictionary<Guid, FuzzerStat<FuzzingInputBase>> Inputs = new Dictionary<Guid, FuzzerStat<FuzzingInputBase>>();
-        public readonly IDictionary<Guid, FuzzerStat<FuzzingConfigBase>> Configurations = new Dictionary<Guid, FuzzerStat<FuzzingConfigBase>>();
+        public readonly IDictionary<Guid, FuzzerStat<FuzzingInputBase>> Inputs = new ConcurrentDictionary<Guid, FuzzerStat<FuzzingInputBase>>();
+        public readonly IDictionary<Guid, FuzzerStat<FuzzingConfigBase>> Configurations = new ConcurrentDictionary<Guid, FuzzerStat<FuzzingConfigBase>>();
         public readonly IDictionary<Guid, FuzzerLog> Logs = new ConcurrentDictionary<Guid, FuzzerLog>();
         public readonly ConcurrentDictionary<Guid, FuzzerStat<FuzzerClientInfo>> Connections = new ConcurrentDictionary<Guid, FuzzerStat<FuzzerClientInfo>>();
 
@@ -161,6 +161,22 @@ namespace TuringMachine.Core.Fuzzers
                 Stop();
                 throw e;
             }
+        }
+
+        /// <summary>
+        /// Update Configurations
+        /// </summary>
+        public void UpdateConfigurations()
+        {
+
+        }
+
+        /// <summary>
+        /// Update Inputs
+        /// </summary>
+        public void UpdateInputs()
+        {
+
         }
 
         /// <summary>

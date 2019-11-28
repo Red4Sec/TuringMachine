@@ -11,11 +11,14 @@ namespace TuringMachine
         [Option('u', "onlyUniques", Required = false, HelpText = "Store only unique errors.")]
         public bool OnlyUniques { get; set; } = true;
 
-        [Option('i', "inputs", Required = true, HelpText = "Set input folder.")]
+        [Option('i', "inputs", Required = false, HelpText = "Set input folder.")]
         public IEnumerable<string> Inputs { get; set; }
 
         [Option('c', "configs", Required = false, HelpText = "Set config folder.")]
         public IEnumerable<string> Configs { get; set; }
+
+        [Option('r', "rpc", Required = false, HelpText = "Rpc EndPoint (127.0.0.1,1234)")]
+        public string RpcEndPoint { get; set; }
 
         /// <summary>
         /// Get files

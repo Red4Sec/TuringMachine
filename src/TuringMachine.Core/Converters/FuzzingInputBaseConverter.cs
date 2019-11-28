@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using TuringMachine.Core.Inputs;
@@ -19,9 +19,9 @@ namespace TuringMachine.Core.Converters
         {
             var obj = JObject.Load(reader);
 
-            if (obj.Property("Type") != null)
+            if (obj.Property("Type", StringComparison.InvariantCultureIgnoreCase) != null)
             {
-                switch (obj.GetValue("Type").ToString())
+                switch (obj.GetValue("Type", StringComparison.InvariantCultureIgnoreCase).ToString())
                 {
                     case "Execution":
                         {
