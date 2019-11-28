@@ -1,8 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using TuringMachine.Core.Fuzzers;
+using TuringMachine.Core.Helpers;
 using TuringMachine.Core.Logs;
 
 namespace TuringMachine.RPC.Controllers
@@ -23,10 +24,16 @@ namespace TuringMachine.RPC.Controllers
 			_server = server;
 		}
 
-		[HttpGet("all")]
-		public ActionResult<IEnumerable<FuzzerClientInfo>> GetAll()
+		[HttpGet("count")]
+		public ActionResult<int> Count()
 		{
-			return _server.Server.Connections.Values.Select(u => u.Source).ToArray();
+			return _server.Server.Connections.Count;
+		}
+
+		[HttpGet("all")]
+		public ActionResult<IEnumerable<FuzzerClientInfo>> GetAll(int index = -1, int count = -1)
+		{
+			return _server.Server.Connections.Values.Select(u => u.Source).ToArray(index, count);
 		}
 
 		[HttpGet("stat")]
