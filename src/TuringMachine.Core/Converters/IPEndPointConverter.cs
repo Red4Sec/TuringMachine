@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Net;
@@ -6,7 +6,7 @@ using TuringMachine.Core.Helpers;
 
 namespace TuringMachine.Core.Converters
 {
-	public class IPEndPointConverter : JsonConverter
+	internal class IPEndPointConverter : JsonConverter
 	{
 		private static readonly Type _ExpectedType = typeof(IPEndPoint);
 

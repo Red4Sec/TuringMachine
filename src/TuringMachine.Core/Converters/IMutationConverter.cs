@@ -1,11 +1,11 @@
-﻿using Newtonsoft.Json;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using TuringMachine.Core.Fuzzers.Mutational;
 
 namespace TuringMachine.Core.Converters
 {
-	public class IMutationConverter : JsonConverter
+	internal class IMutationConverter : JsonConverter
 	{
 		private static readonly Type _ExpectedType = typeof(IMutation);
 

@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using TuringMachine.Core.Fuzzers.Mutational;
@@ -6,7 +6,7 @@ using TuringMachine.Core.Fuzzers.Mutational.Filters;
 
 namespace TuringMachine.Core.Converters
 {
-	public class IChunkFilterConverter : JsonConverter
+	internal class IChunkFilterConverter : JsonConverter
 	{
 		private static readonly Type _ExpectedType = typeof(IChunkFilter);
 

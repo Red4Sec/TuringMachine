@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using TuringMachine.Core.Inputs;
@@ -6,7 +6,7 @@ using TuringMachine.Core.Interfaces;
 
 namespace TuringMachine.Core.Converters
 {
-	public class FuzzingInputBaseConverter : JsonConverter
+	internal class FuzzingInputBaseConverter : JsonConverter
 	{
 		private static readonly Type _ExpectedType = typeof(FuzzingInputBase);
 

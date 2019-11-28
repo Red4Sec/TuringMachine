@@ -1,11 +1,11 @@
-﻿using Newtonsoft.Json;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using TuringMachine.Core.Interfaces;
 
 namespace TuringMachine.Core.Converters
 {
-	public class IGetValueConverter : JsonConverter
+	internal class IGetValueConverter : JsonConverter
 	{
 		private static readonly Type[] _ExpectedTypes = new Type[]
 		{
