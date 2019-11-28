@@ -117,6 +117,17 @@ CONTROL+C  # in the client shell
 Invoke-Item .\coverageReport\index.htm
 ```
 
+#### RPC
+
+```
+dotnet .\src\TuringMachine\bin\Debug\netcoreapp3.0\TuringMachine.dll listen --rpc 127.0.0.1,1234
+Start-Process http://127.0.0.1:1234/swagger/index.html
+```
+
+<p align="center">
+  <img src="https://github.com/Red4Sec/TuringMachine/blob/master/info/rpc.png?raw=true" width="500px">
+</p>
+
 ## Debug
 
 You can easily debug with Visual Studio 2019 by using `TuringMachine.sln`.
