@@ -1,4 +1,4 @@
-﻿using CommandLine;
+using CommandLine;
 using System.Collections.Generic;
 using System.IO;
 using TuringMachine.Core;
@@ -19,6 +19,12 @@ namespace TuringMachine
 
 		[Option('r', "rpc", Required = false, HelpText = "Rpc EndPoint (127.0.0.1,1234)")]
 		public string RpcEndPoint { get; set; }
+
+		[Option('s', "rpc-cert", Required = false, HelpText = "Rpc HTTPS certificate")]
+		public string RpcHttpsCertificate { get; set; }
+
+		[Option('p', "rpc-cert-password", Required = false, HelpText = "Rpc HTTPS certificate password")]
+		public string RpcHttpsCertificatePassword { get; set; }
 
 		/// <summary>
 		/// Get files

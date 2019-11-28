@@ -55,7 +55,7 @@ namespace TuringMachine
 
 				if (!string.IsNullOrEmpty(opts.RpcEndPoint))
 				{
-					rpc = new RpcServer(opts.RpcEndPoint.ToIpEndPoint(), server);
+					rpc = new RpcServer(opts.RpcEndPoint.ToIpEndPoint(), server, opts.RpcHttpsCertificate, opts.RpcHttpsCertificatePassword);
 					rpc.Start();
 				}
 

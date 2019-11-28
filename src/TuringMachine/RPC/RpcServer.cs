@@ -31,14 +31,28 @@ namespace TuringMachine.RPC
 		public FuzzerServer Server { get; }
 
 		/// <summary>
+		/// HTTPS Certificate File
+		/// </summary>
+		public string HTTPSCertFile { get; }
+
+		/// <summary>
+		/// HTTPS Certificate Password
+		/// </summary>
+		public string HTTPSCertificatePassword { get; }
+
+		/// <summary>
 		/// Constructor
 		/// </summary>
 		/// <param name="endPoint">EndPoint</param>
 		/// <param name="server">Server</param>
-		public RpcServer(IPEndPoint endPoint, FuzzerServer server)
+		/// <param name="httpsCertFile">HTTPS certificate file</param>
+		/// <param name="httpsPassword">HTTPS certificate password</param>
+		public RpcServer(IPEndPoint endPoint, FuzzerServer server, string httpsCertFile, string httpsPassword)
 		{
 			EndPoint = endPoint;
 			Server = server;
+			HTTPSCertFile = httpsCertFile;
+			HTTPSCertificatePassword = httpsPassword;
 		}
 
 		/// <summary>
@@ -51,7 +65,21 @@ namespace TuringMachine.RPC
 			_host = WebHost.CreateDefaultBuilder()
 				.UseKestrel(options => options.Listen(EndPoint.Address, EndPoint.Port, listenOptions =>
 			{
-				// TODO: HTTPS
+				if (string.IsNullOrEmpty(HTTPSCertFile)) return;
+
+				listenOptions.UseHttps(HTTPSCertFile, HTTPSCertificatePassword, httpsConnectionAdapterOptions =>
+				{
+					//if (trustedAuthorities is null || trustedAuthorities.Length == 0)
+					//	return;
+					//httpsConnectionAdapterOptions.ClientCertificateMode = ClientCertificateMode.RequireCertificate;
+					//httpsConnectionAdapterOptions.ClientCertificateValidation = (cert, chain, err) =>
+					//{
+					//	if (err != SslPolicyErrors.None)
+					//		return false;
+					//	X509Certificate2 authority = chain.ChainElements[chain.ChainElements.Count - 1].Certificate;
+					//	return trustedAuthorities.Contains(authority.Thumbprint);
+					//};
+				});
 			}))
 		   .Configure(app =>
 		   {
