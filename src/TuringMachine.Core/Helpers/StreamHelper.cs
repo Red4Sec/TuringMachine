@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using System.Text;
 
@@ -101,6 +101,20 @@ namespace TuringMachine.Core.Helpers
 			}
 
 			return total;
+		}
+
+		/// <summary>
+		/// Read all data
+		/// </summary>
+		/// <param name="stream">Stream</param>
+		/// <returns>Data</returns>
+		public static byte[] ReadFull(this Stream stream)
+		{
+			using (var copy = new MemoryStream())
+			{
+				stream.CopyTo(copy, 4096);
+				return copy.ToArray();
+			}
 		}
 	}
 }

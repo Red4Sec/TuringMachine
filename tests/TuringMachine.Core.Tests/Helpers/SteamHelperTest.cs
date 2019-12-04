@@ -1,4 +1,4 @@
-﻿using NUnit.Framework;
+using NUnit.Framework;
 using System.IO;
 using TuringMachine.Core.Helpers;
 
@@ -43,6 +43,11 @@ namespace TuringMachine.Core.Tests.Helpers
 			var read = new byte[data.Length];
 
 			Assert.AreEqual(read.Length, StreamHelper.ReadFull(a, read, 0, read.Length));
+			CollectionAssert.AreEqual(read, data);
+
+			a.Position = 0;
+
+			read = StreamHelper.ReadFull(a);
 			CollectionAssert.AreEqual(read, data);
 		}
 	}
