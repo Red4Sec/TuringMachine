@@ -24,12 +24,12 @@ jobs:
         dotnet tool install --tool-path ./ dotnet-format
     - name: Check dotnet-format
       run: |
-        ./dotnet format --check --dry-run -w src/TuringMachine -v diagnostic
-        ./dotnet format --check --dry-run -w src/TuringMachine.Core -v diagnostic
-        ./dotnet format --check --dry-run -w tests/TuringMachine.Core.Tests -v diagnostic
-        ./dotnet format --check --dry-run -w samples/Coverage.Payload -v diagnostic
-        ./dotnet format --check --dry-run -w samples/StackOverflowException.Payload -v diagnostic
-        ./dotnet format --check --dry-run -w samples/vulnserver/VulnServer.Payload -v diagnostic
+        ./dotnet-format --check --dry-run -w src/TuringMachine -v diagnostic
+        ./dotnet-format --check --dry-run -w src/TuringMachine.Core -v diagnostic
+        ./dotnet-format --check --dry-run -w tests/TuringMachine.Core.Tests -v diagnostic
+        ./dotnet-format --check --dry-run -w samples/Coverage.Payload -v diagnostic
+        ./dotnet-format --check --dry-run -w samples/StackOverflowException.Payload -v diagnostic
+        ./dotnet-format --check --dry-run -w samples/vulnserver/VulnServer.Payload -v diagnostic
     - name: Test
       run: |
         find tests -name *.csproj | xargs -I % dotnet add % package coverlet.msbuild
