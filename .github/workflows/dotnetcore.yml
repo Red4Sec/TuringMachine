@@ -32,7 +32,7 @@ jobs:
         ./dotnet-format --check --dry-run -w samples/vulnserver/VulnServer.Payload -v diagnostic
     - name: Test
       run: |
-        find tests/TuringMachine.Core.Tests -name *.csproj | xargs -I % dotnet add % package coverlet.msbuild
+        dotnet add  tests/TuringMachine.Core.Tests\TuringMachine.Core.Tests.csproj package coverlet.msbuild
         dotnet test tests/TuringMachine.Core.Tests\TuringMachine.Core.Tests.csproj -v m /p:CollectCoverage=true /p:CoverletOutputFormat=lcov /p:CoverletOutput=${GITHUB_WORKSPACE}/coverage/lcov' /p:Exclude=\"[coverlet.*]*,[*]Coverlet.Core*\"
     - name: Coveralls
       uses: coverallsapp/github-action@master
