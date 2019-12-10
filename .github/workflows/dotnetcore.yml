@@ -33,7 +33,7 @@ jobs:
     - name: Test
       run: |
         dotnet add  tests/TuringMachine.Core.Tests/TuringMachine.Core.Tests.csproj package coverlet.msbuild
-        dotnet test tests/TuringMachine.Core.Tests/TuringMachine.Core.Tests.csproj -v m /p:CollectCoverage=true /p:CoverletOutputFormat=lcov /p:CoverletOutput=${GITHUB_WORKSPACE}/coverage/lcov' /p:Exclude=\"[coverlet.*]*,[*]Coverlet.Core*\"
+        dotnet test tests/TuringMachine.Core.Tests/TuringMachine.Core.Tests.csproj -v m /p:CollectCoverage=true /p:CoverletOutputFormat=lcov /p:CoverletOutput=${GITHUB_WORKSPACE}/coverage/lcov /p:Exclude=\"[coverlet.*]*,[*]Coverlet.Core*\"
     - name: Coveralls
       uses: coverallsapp/github-action@master
       with:
