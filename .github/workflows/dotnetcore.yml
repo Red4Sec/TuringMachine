@@ -1,0 +1,41 @@
+name: .NET Core Test and Publish
+
+on:
+  push:
+    branches: master
+  pull_request:
+
+env:
+  DOTNET_VERSION: 3.0.100
+
+jobs:
+
+  Test:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v1
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: ${{ env.DOTNET_VERSION }}
+    - name: Check format
+      run: |
+        dotnet tool install --tool-path ./ dotnet-format
+        ./dotnet format --check --dry-run -w src/TuringMachine -v diagnostic
+        ./dotnet format --check --dry-run -w src/TuringMachine.Core -v diagnostic
+        ./dotnet format --check --dry-run -w tests/TuringMachine.Core.Tests -v diagnostic
+        ./dotnet format --check --dry-run -w samples/Coverage.Payload -v diagnostic
+        ./dotnet format --check --dry-run -w samples/StackOverflowException.Payload -v diagnostic
+        ./dotnet format --check --dry-run -w samples/vulnserver/VulnServer.Payload -v diagnostic
+    
+    - name: Test
+      run: |
+        find tests -name *.csproj | xargs -I % dotnet add % package coverlet.msbuild
+        dotnet test -v m /p:CollectCoverage=true /p:CoverletOutputFormat=lcov /p:CoverletOutput=${GITHUB_WORKSPACE}/coverage/lcov' /p:Exclude=\"[coverlet.*]*,[*]Coverlet.Core*\"
+    - name: Coveralls
+      uses: coverallsapp/github-action@master
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+
+  
