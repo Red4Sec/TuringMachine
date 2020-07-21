@@ -1,5 +1,5 @@
-﻿using System;
-using System.Linq;
+using System;
+using System.Text;
 using TuringMachine.Core.Extensions;
 using TuringMachine.Core.Interfaces;
 
@@ -11,6 +11,26 @@ namespace TuringMachine.Core.Inputs
 		/// Data
 		/// </summary>
 		public byte[] Data { get; set; }
+
+		/// <summary>
+		/// UTF8 Data
+		/// </summary>
+		public string UTF8Data
+		{
+			get
+			{
+				return Encoding.UTF8.GetString(Data);
+			}
+			set
+			{
+				Data = Encoding.UTF8.GetBytes(value);
+
+				if (string.IsNullOrEmpty(Description))
+				{
+					Description = UTF8Data;
+				}
+			}
+		}
 
 		/// <summary>
 		/// Constructor
