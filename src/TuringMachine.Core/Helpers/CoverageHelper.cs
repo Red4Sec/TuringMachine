@@ -1,4 +1,4 @@
-﻿using Coverlet.Core;
+using Coverlet.Core;
 using Coverlet.Core.Abstracts;
 using Coverlet.Core.Reporters;
 using Palmmedia.ReportGenerator.Core;
@@ -12,7 +12,7 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 
-//namespace Coverlet.Core.Instrumentation.XXX.Tracker
+//namespace Coverlet.Core.Instrumentation.Tracker
 //{
 //    public static class Payload_Test
 //    {
@@ -92,7 +92,7 @@ namespace TuringMachine.Core.Helpers
 
 			var hitsArrays = new List<int[]>();
 			var unloadModule = new List<MethodInfo>();
-			var regex = new Regex(@"Coverlet\.Core\.Instrumentation\.Tracker\..*\.Payload_\.*");
+			var regex = new Regex(@"Coverlet\.Core\.Instrumentation\.Tracker\..*");
 
 			foreach (var asm in AppDomain.CurrentDomain.GetAssemblies())
 			{
