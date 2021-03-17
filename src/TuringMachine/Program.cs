@@ -223,7 +223,7 @@ namespace TuringMachine
 			FuzzerStat<T>[] array;
 			lock (data)
 			{
-				array = data.ToArray();
+				array = data.OrderByDescending(u => u.Crashes).Take(15).ToArray();
 			}
 
 			if (array.Length <= 0)
